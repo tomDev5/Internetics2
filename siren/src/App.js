@@ -10,6 +10,19 @@ import ResetPassword from './Pages/ResetPassword';
 
 function App() {
 
+  let state = {
+    rooms: [
+      {name: 'Room1', id: "A"},
+      {name: 'Room2', id: "B"},
+      {name: 'Room3', id: "C"}
+  ],
+    room: null
+  }
+  
+  let updateSelectedRoom = (room) => {
+    state.room = room
+  }
+
   return (
     <div className="App" style={{height: '100%'}}>
       
@@ -19,10 +32,10 @@ function App() {
                 <TopBar></TopBar>
                   <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
                   <div className="col-sm-2" style={{height: '100%'}}>
-                    <SideBar></SideBar>
+                    <SideBar rooms={state.rooms} updateSelectedRoom={updateSelectedRoom}></SideBar>
                   </div>
                   <div className="col-sm-10" style={{height: '100%'}}>
-                    <Feed></Feed>
+                    <Feed selectedRoom={state.room}></Feed>
                   </div>
                   </div>
                 </>

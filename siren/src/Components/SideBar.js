@@ -4,24 +4,28 @@ import Button from 'react-bootstrap/Button'
 export default class SideBar extends Component {
 
     state={
-        rooms: [
-            {name: 'Room1', id: "a"},
-            {name: 'Room2', id: "b"},
-            {name: 'Room3', id: "c"}       
-        ]
+        
+    }
+
+    constructor(props) {
+        super(props)
+
+
     }
 
     onRoomClick = (e)=>{
         let l = document.getElementById("room-all")
         if(e.target.id === "room-all"){
             l.classList.add("active")
+            this.props.updateSelectedRoom(null)
         }else{
             l.classList.remove("active")
         }
-        this.state.rooms.forEach(room=>{
+        this.props.rooms.forEach(room=>{
             let l = document.getElementById("room-"+room.id)
             if(l.id === e.target.id){
                 l.classList.add("active")
+                this.props.updateSelectedRoom(room.id)
             }else{
                 l.classList.remove("active")
             }
@@ -32,13 +36,13 @@ export default class SideBar extends Component {
     componentDidMount(){
         if(!window.location.href.split('/')[3]){
             //in feed page
-            this.state.rooms.forEach(room=>{
+            this.props.rooms.forEach(room=>{
                 let l = document.getElementById("room-"+room.id)
                 l.classList.remove("disabled")
             })
         }else{
             //not in feed page
-            this.state.rooms.forEach(room=>{
+            this.props.rooms.forEach(room=>{
                 let l = document.getElementById("room-"+room.id)
                 l.classList.add("disabled")
             })
@@ -53,7 +57,7 @@ export default class SideBar extends Component {
                 <button id={"room-all"} type="button" className="list-group-item list-group-item-action active" onClick={this.onRoomClick}>
                         All Rooms
                         </button>
-                {this.state.rooms.map(room=>{
+                {this.props.rooms.map(room=>{
                     return <button id={"room-"+room.id} type="button" className="list-group-item list-group-item-action" onClick={this.onRoomClick}>
                         {room.name}
                         </button>
