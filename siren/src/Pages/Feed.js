@@ -27,7 +27,7 @@ export default class Feed extends Component {
     render() {
         return (
             <div style={{height: '100%', overflowY: 'scroll'}}>
-                <div style={{height: '100%', margin: 30, marginLeft: 0}}>
+                <div style={{height: '100%', margin: 15, marginLeft: 0}}>
                     {this.state.messages.map((message, i)=>{
                         return <Card key={i} style={{marginBottom: 15, textAlign: 'left'}}>
                             <Card.Header><a href={"/user/"+message.user} style={{textDecoration:'none'}}>@{message.user}</a>, on room {message.room}</Card.Header>

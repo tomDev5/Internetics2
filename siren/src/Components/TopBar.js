@@ -16,7 +16,7 @@ export default class TopBar extends Component {
                     <Nav.Link href="/profile">Profile</Nav.Link>
                     </Nav>
                     <Form inline>
-                    <Button variant="outline-light">Logout</Button>
+                    <Button variant="outline-light" href="/login">Logout</Button>
                     </Form>
                 </Navbar>
             </div>
