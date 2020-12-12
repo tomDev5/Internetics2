@@ -16,7 +16,7 @@ export default class SignUp extends Component {
         errorMessage: ''
     }
     signup = ()=>{
-        const recipeUrl = 'http://localhost:8080/users/signup';
+        const recipeUrl = '/api/users/signup';
         const postBody = {
             _id: this.state.username,
             name: this.state.name,
@@ -34,8 +34,8 @@ export default class SignUp extends Component {
         fetch(recipeUrl, requestMetadata)
             .then(res => {
                 if(res.status === 200){
-                    window.location.pathname = '/login'
-                }else if(res.status === 406){
+                    window.location.pathname = '/Login'
+                }else if(res.status === 409){
                     this.setState({errorMessage: 'Content error. You\'re probably sending this request with the console.'})
                 }else if(res.status === 403){
                     this.setState({errorMessage: 'Username is taken.'})
@@ -92,7 +92,7 @@ export default class SignUp extends Component {
                                         <Form>
                                             <Form.Group as={Row}>
                                             <Form.Label column sm="4">
-                                                <a href="/login">Back to login</a>
+                                                <a href="/Login">Back to login</a>
                                             </Form.Label>
                                             <Col sm="8">
                                                 <Button variant="success" style={{float: 'right'}} onClick={this.signup} 

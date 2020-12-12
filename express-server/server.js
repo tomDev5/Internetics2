@@ -1,20 +1,28 @@
 const express = require('express');
 const session = require('express-session')
-const mongoose = require('mongoose');
+const bodyParser = require('body-parser')
+
 const users = require('./routes/users')
-var bodyParser = require('body-parser')
 
-const cors = require('cors');
-const app = express();
+const app = express()
 
-app.use(cors())
-app.use( bodyParser.json() )
+let sess = {
+  resave: false,
+  saveUninitialized: true,
+  secret: 'keyboard cat',
+  cookie: {}
+}
+ 
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
+
+app.use(session(sess))
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }))
 
-app.post("/",(req,res) => {
-  res.send('post')
-})
-app.use('/users', users)
+app.use('/api/users', users)
 app.listen(8080);

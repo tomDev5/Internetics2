@@ -14,26 +14,29 @@ export default class Login extends Component {
         password: '',
         errorMessage: ''
     }
+    
     login = ()=>{
-        const recipeUrl = 'http://localhost:8080/users/login';
+        const recipeUrl = '/api/users/Login'
         const postBody = {
             username: this.state.username,
             password: this.state.password
-        };
+        }
         const requestMetadata = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(postBody)
-        };
+        }
 
         fetch(recipeUrl, requestMetadata)
             .then(res => {
-                console.log(res)
-                if(res.status === 401){
+                if (res.status === 200) {
+                    this.props.getRooms()
+                    window.location.hash = '/Feed'
+                } else if(res.status === 401){
                     this.setState({errorMessage: 'Username and/or password are incorrect.'})
-                }else if(res.status !== 200){
+                } else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})
                 }
             })
@@ -70,7 +73,7 @@ export default class Login extends Component {
                                         <Form>
                                             <Form.Group as={Row}>
                                             <Form.Label column sm="4">
-                                                <a href="/signup">Sign Up</a>
+                                                <a href="#/SignUp">Sign Up</a>
                                                 <span>  ·  </span>
                                                 <a href="/ResetPassword">Forgot Password?</a>
                                             </Form.Label>

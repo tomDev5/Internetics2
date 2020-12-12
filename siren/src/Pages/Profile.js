@@ -10,18 +10,67 @@ export default class Profile extends Component {
 
     state={
         userData: {
-            username: 'tomlubin',
-            name: 'Tom Lubin',
-            last_updated: '2019___'
+            username: '',
+            name: '',
+            last_updated: ''
         },
         nameField: '',
         new_password: '',
         new_password2: '',
-        current_password: ''
+        current_password: '',
+        errorMessage: ''
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.getSelf()
     }
 
     componentDidMount(){
         this.setState({nameField: this.state.userData.name})
+    }
+
+    getSelf = () => {
+        const recipeUrl = '/api/users/self'
+        const requestMetadata = {
+        method: 'GET'
+        }
+        fetch(recipeUrl, requestMetadata)
+            .then(res => res.json())
+            .then(json => this.setState({
+                userData: {
+                    username: json._id,
+                    name: json.name,
+                    last_updated: '2019__'
+                }
+            }))
+            .catch(() => {
+                this.setState({errorMessage: 'Please try again in a few minutes.'})
+            })
+    }
+
+    updateName = () => {
+        const recipeUrl = '/api/users/name'
+        const postBody = {
+            name: this.state.nameField
+        }
+        const requestMetadata = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postBody)
+        }
+
+        fetch(recipeUrl, requestMetadata)
+            .then(res => {
+                if (res.status === 200) {
+                    this.getSelf()
+                } else {
+                    this.setState({errorMessage: 'Please try again in a few minutes.'})
+                }
+            })
     }
 
     render() {
@@ -43,16 +92,16 @@ export default class Profile extends Component {
                             </Card.Body>
                             <ListGroup className="list-group-flush">
                                 <ListGroupItem>
-                                    <Form>
-                                    <Form.Group as={Row} controlId="formPlaintextEmail">
-                                        <Form.Label column sm="2">
-                                            Last Updated: {this.state.userData.last_updated}
-                                        </Form.Label>
-                                        <Col sm="10">
-                                            <Button variant="success" style={{float: 'right'}} disabled={this.state.nameField === '' || this.state.nameField === this.state.userData.name}>Update Name</Button>
+                                    <Row>
+                                        <Col>
+                                            <div style={{marginTop: '5px', color: 'grey'}}>
+                                                Last Updated: {this.state.userData.last_updated}
+                                            </div>
                                         </Col>
-                                    </Form.Group>
-                                    </Form>
+                                        <Col>
+                                            <Button variant="success" style={{float: 'right'}} disabled={this.state.nameField === '' || this.state.nameField === this.state.userData.name} onClick={this.updateName}>Update Name</Button>
+                                        </Col>
+                                    </Row>
                                 </ListGroupItem>
                             </ListGroup>
                     </Card>
@@ -91,6 +140,13 @@ export default class Profile extends Component {
                                     <Button variant="success" style={{float: 'right'}} disabled={this.state.new_password === '' || this.state.new_password2 === '' || this.state.current_password === ''}>Update Password</Button>
                                 </ListGroupItem>
                             </ListGroup>
+                    </Card>
+                    <Card style={{marginBottom: 15, textAlign: 'left', width: '100%', backgroundColor: '#dc3545', color: '#FFF'}} hidden={this.state.errorMessage.length===0}>
+                            <Card.Body>
+                            <Card.Text>
+                                Error: {this.state.errorMessage}
+                            </Card.Text>
+                            </Card.Body>
                     </Card>
             </div>
         )

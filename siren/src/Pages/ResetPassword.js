@@ -39,7 +39,7 @@ export default class ResetPassword extends Component {
                                         <Form>
                                             <Form.Group as={Row}>
                                             <Form.Label column sm="2">
-                                                <a href="/login">back to login page</a>
+                                                <a href="/Login">back to login page</a>
                                             </Form.Label>
                                             <Col sm="10">
                                                 <Button variant="success" style={{float: 'right'}} onClick={this.resetPassword}>Send email</Button>
