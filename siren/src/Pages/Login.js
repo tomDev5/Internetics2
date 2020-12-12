@@ -11,11 +11,32 @@ export default class Login extends Component {
 
     state={
         username: '',
-        password: ''
+        password: '',
+        errorMessage: ''
     }
     login = ()=>{
-        console.log('username: '+this.state.username)
-        console.log('password: '+this.state.password)
+        const recipeUrl = 'http://localhost:8080/users/login';
+        const postBody = {
+            username: this.state.username,
+            password: this.state.password
+        };
+        const requestMetadata = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postBody)
+        };
+
+        fetch(recipeUrl, requestMetadata)
+            .then(res => {
+                console.log(res)
+                if(res.status === 401){
+                    this.setState({errorMessage: 'Username and/or password are incorrect.'})
+                }else if(res.status !== 200){
+                    this.setState({errorMessage: 'Please try again in a few minutes.'})
+                }
+            })
     }
 
     render() {
@@ -23,7 +44,7 @@ export default class Login extends Component {
             <div>
                 <Container style={{marginTop: '10vw', alignItems: 'center'}}>
                     <Card style={{marginBottom: 15, textAlign: 'left', width: '100%'}}>
-                                <Card.Header>Login to Siren™</Card.Header>
+                                <Card.Header className="bg-primary light" style={{color: '#FFF'}}>Login to Siren™</Card.Header>
                                 <Card.Body>
                                 <Form>
                                     <Form.Group as={Row} controlId="formPlaintextEmail">
@@ -48,11 +69,11 @@ export default class Login extends Component {
                                     <ListGroupItem>
                                         <Form>
                                             <Form.Group as={Row}>
-                                            <Col column sm="4">
-                                                <a href="/SignUp">Sign Up</a>
+                                            <Form.Label column sm="4">
+                                                <a href="/signup">Sign Up</a>
                                                 <span>  ·  </span>
                                                 <a href="/ResetPassword">Forgot Password?</a>
-                                            </Col>
+                                            </Form.Label>
                                             <Col sm="8">
                                                 <Button variant="success" style={{float: 'right'}} onClick={this.login} disabled={this.state.username === '' || this.state.password === ''}>Login</Button>
                                             </Col>
@@ -60,6 +81,13 @@ export default class Login extends Component {
                                     </Form>
                                 </ListGroupItem>
                             </ListGroup>
+                        </Card>
+                        <Card style={{marginBottom: 15, textAlign: 'left', width: '100%', backgroundColor: '#dc3545', color: '#FFF'}} hidden={this.state.errorMessage.length===0}>
+                                <Card.Body>
+                                <Card.Text>
+                                    Error: {this.state.errorMessage}
+                                </Card.Text>
+                                </Card.Body>
                         </Card>
                     </Container>
             </div>

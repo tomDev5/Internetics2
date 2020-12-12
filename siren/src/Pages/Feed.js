@@ -11,10 +11,6 @@ export default class Feed extends Component {
         messages: []
     }
 
-    constructor(props) {
-        super(props)
-    }
-
     componentDidMount() {
         let all_messages = [
             {id: 'A', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}, {user: 'tomlub', text: 'HELLO!'}], likeCount: 16, liked: true},

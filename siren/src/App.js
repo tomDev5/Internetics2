@@ -54,7 +54,7 @@ function App() {
               </div>
             </>
           }} />
-          <Route path="/Login" exact render={props=>{
+          <Route path="/login" exact render={props=>{
             return <>
               <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
                 <div className="col-sm-12">

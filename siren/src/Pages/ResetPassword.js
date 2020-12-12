@@ -21,12 +21,12 @@ export default class ResetPassword extends Component {
             <div>
                 <Container style={{marginTop: '10vw', alignItems: 'center'}}>
                     <Card style={{marginBottom: 15, textAlign: 'left', width: '100%'}}>
-                                <Card.Header>Reset Siren™ Password</Card.Header>
+                                <Card.Header className="bg-primary" style={{color: '#FFF'}}>Reset Siren™ Password</Card.Header>
                                 <Card.Body>
                                 <Form>
                                     <Form.Group as={Row} controlId="formPlaintextEmail">
                                         <Form.Label column sm="2">
-                                            Username:
+                                            Enter your username:
                                         </Form.Label>
                                         <Col sm="10">
                                             <Form.Control type="username"  onChange={(e)=>this.setState({username: e.target.value})}/>
@@ -39,7 +39,7 @@ export default class ResetPassword extends Component {
                                         <Form>
                                             <Form.Group as={Row}>
                                             <Form.Label column sm="2">
-                                                <a href="/Login">back to login page</a>
+                                                <a href="/login">back to login page</a>
                                             </Form.Label>
                                             <Col sm="10">
                                                 <Button variant="success" style={{float: 'right'}} onClick={this.resetPassword}>Send email</Button>

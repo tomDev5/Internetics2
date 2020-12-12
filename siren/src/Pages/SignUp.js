@@ -12,13 +12,37 @@ export default class SignUp extends Component {
         username: '',
         name: '',
         password: '',
-        password2: ''
+        password2: '',
+        errorMessage: ''
     }
     signup = ()=>{
-        console.log('username: '+this.state.username)
-        console.log('password: '+this.state.password)
-        console.log('name')
-        console.log('password2')
+        const recipeUrl = 'http://localhost:8080/users/signup';
+        const postBody = {
+            _id: this.state.username,
+            name: this.state.name,
+            password: this.state.password,
+            password2: this.state.password2
+        };
+        const requestMetadata = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postBody)
+        };
+
+        fetch(recipeUrl, requestMetadata)
+            .then(res => {
+                if(res.status === 200){
+                    window.location.pathname = '/login'
+                }else if(res.status === 406){
+                    this.setState({errorMessage: 'Content error. You\'re probably sending this request with the console.'})
+                }else if(res.status === 403){
+                    this.setState({errorMessage: 'Username is taken.'})
+                }else if(res.status !== 200){
+                    this.setState({errorMessage: 'Please try again in a few minutes.'})
+                }
+            })
     }
 
     render() {
@@ -26,7 +50,7 @@ export default class SignUp extends Component {
             <div>
                 <Container style={{marginTop: '10vw', alignItems: 'center'}}>
                     <Card style={{marginBottom: 15, textAlign: 'left', width: '100%'}}>
-                                <Card.Header>Sign up to Siren™</Card.Header>
+                                <Card.Header className="bg-primary" style={{color: '#FFF'}}>Sign up to Siren™</Card.Header>
                                 <Card.Body>
                                 <Form>
                                     <Form.Group as={Row} controlId="formPlaintextEmail">
@@ -67,9 +91,9 @@ export default class SignUp extends Component {
                                     <ListGroupItem>
                                         <Form>
                                             <Form.Group as={Row}>
-                                            <Col column sm="4">
-                                                <a href="/Login">Back to login</a>
-                                            </Col>
+                                            <Form.Label column sm="4">
+                                                <a href="/login">Back to login</a>
+                                            </Form.Label>
                                             <Col sm="8">
                                                 <Button variant="success" style={{float: 'right'}} onClick={this.signup} 
                                                 disabled={this.state.username === '' || this.state.password === '' || this.state.name === '' || this.state.password2 === ''}>
@@ -79,6 +103,13 @@ export default class SignUp extends Component {
                                     </Form>
                                 </ListGroupItem>
                             </ListGroup>
+                        </Card>
+                        <Card style={{marginBottom: 15, textAlign: 'left', width: '100%', backgroundColor: '#dc3545', color: '#FFF'}} hidden={this.state.errorMessage.length===0}>
+                                <Card.Body>
+                                <Card.Text>
+                                    Error: {this.state.errorMessage}
+                                </Card.Text>
+                                </Card.Body>
                         </Card>
                     </Container>
             </div>

@@ -1,17 +1,6 @@
 import React, { Component } from 'react'
-import Button from 'react-bootstrap/Button'
 
 export default class SideBar extends Component {
-
-    state={
-        
-    }
-
-    constructor(props) {
-        super(props)
-
-
-    }
 
     onRoomClick = (e)=>{
         let l = document.getElementById("room-all")
