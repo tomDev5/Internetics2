@@ -7,6 +7,7 @@ import Feed from './Pages/Feed';
 import Profile from './Pages/Profile';
 import Login from './Pages/Login';
 import ResetPassword from './Pages/ResetPassword';
+import SignUp from './Pages/SignUp';
 
 function App() {
 
@@ -53,14 +54,20 @@ function App() {
               </div>
             </>
           }} />
-          <Route path="/Settings" exact render={props=>{
-            return <h1>/Settings</h1>
-          }} />
           <Route path="/Login" exact render={props=>{
             return <>
               <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
                 <div className="col-sm-12">
                   <Login></Login>
+                </div>
+              </div>
+                </>
+          }} />
+          <Route path="/SignUp" exact render={props=>{
+            return <>
+              <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
+                <div className="col-sm-12">
+                  <SignUp></SignUp>
                 </div>
               </div>
                 </>
