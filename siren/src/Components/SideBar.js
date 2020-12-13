@@ -16,7 +16,7 @@ export default class SideBar extends Component {
         return (
             <div className="list-group" style={{margin: 15}}>
                 <button id={"room-all"} type="button" onClick={this.onRoomClick}
-                    className={"list-group-item list-group-item-action" + (this.props.selectedRoom === null ? ' active' : '')}
+                    className={"list-group-item list-group-item-action" + (!this.props.selectedRoom ? ' active' : '')}
                     disabled={!window.location.hash.startsWith('#/Feed')}>
                     All Rooms
                 </button>

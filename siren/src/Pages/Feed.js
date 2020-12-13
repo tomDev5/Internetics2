@@ -26,59 +26,64 @@ export default class Feed extends Component {
         }
     }
 
+    stringifyTimestamp = (timestamp) => {
+        const date = new Date(timestamp)
+        const europe_date = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
+        return date.toLocaleTimeString() + ', ' + europe_date
+    }
+
     render() {
-        if(this.props.rooms){
-            let displayMessages = []
-            if(!this.props.selectedRoom){
-                this.props.rooms.forEach(room=>{
-                    room.messages.forEach(message=>{
-                        displayMessages.push(message)
-                    })
-                })
-            }else{
-                this.props.rooms.filter(room=>room._id === this.props.selectedRoom)[0].messages.forEach(message=>{
-                    displayMessages.push(message)
-                })
-            }
-            console.log(displayMessages)
-            return (
-            <div style={{height: '100%', overflowY: 'scroll'}}>
-                <div style={{height: '100%', margin: 15, marginLeft: 0}}>
-                    {displayMessages.map((message, i)=>{
-                        return <Card key={i} style={{marginBottom: 15, textAlign: 'left'}}>
-                            <Card.Header><a href={"#/Profile/"+message.user} style={{textDecoration:'none'}}>@{message.user}</a></Card.Header>
-                            <Card.Body>{message.text}</Card.Body>
-                            <ListGroup className="list-group-flush">
-                                <ListGroupItem>
-                                    <Button id={"comments-" + i + "-btn"} variant="outline-dark" style={{marginRight: 15}} onClick={this.onComments}>{message.comments.length} Comments</Button>
-                                    <Button id={"likes-" + i} variant={message.liked ? "success" : "outline-success"} onClick={this.onLike}>{message.likeCount} Likes</Button>
-                                </ListGroupItem>
-                            
-                            <div id={"comments-" + i} className="collapse">
-                                <Card.Body>
-                                    <Form inline action="/Comments/PostComment" method="post">
-                                    <div className="form-group mx-sm-3 mb-2" style={{width: 'calc(100% - 120px)'}}>
-                                        <input type="text" className="form-control"
-                                               style={{width: '100%'}} name="text" placeholder="Enter a comment..." />
-                                    </div>
-                                    <button type="submit" className="btn btn-outline-primary mb-2">SEND</button>
-                                    </Form>
-                                </Card.Body>
-                                {message.comments.map(comment => {
-                                    return <ListGroupItem>
-                                        <span style={{marginRight: '1rem'}}><a href={"#/Profile/"+message.user}>@{comment.user}</a></span>
-                                        <span>{comment.text}</span>
-                                    </ListGroupItem>
-                                })}
-                            </div>
-                            </ListGroup>
-                    </Card>
-                    })}
-                </div>
-            </div>
-        )
-    }else{
-            return(<div></div>)
+        let displayMessages = []
+        if(!this.props.selectedRoom){
+            this.props.rooms.forEach(room => displayMessages.push(...room.messages))
+        }else{
+            this.props.rooms.filter(room=>room._id === this.props.selectedRoom)[0].messages.forEach(message=>{
+                displayMessages.push(message)
+            })
         }
+
+        return (
+        <div style={{height: '100%', overflowY: 'scroll'}}>
+            <div style={{height: '100%', margin: 15, marginLeft: 0}}>
+                {displayMessages.sort((a, b) => a.upload_time < b.upload_time).map((message, i)=>{
+                    return <Card key={i} style={{marginBottom: 15, textAlign: 'left'}}>
+                        <Card.Header>
+                            <a href={"#/Profile/"+message.user} style={{textDecoration:'none'}}>@{message.user}</a>
+                            <small style={{marginLeft: '5px'}}>{this.stringifyTimestamp(message.upload_time)}</small>
+                        </Card.Header>
+                        <Card.Body>{message.text}</Card.Body>
+                        <ListGroup className="list-group-flush">
+                            <ListGroupItem>
+                                <Button id={"comments-" + i + "-btn"} variant="outline-dark" style={{marginRight: 15}} onClick={this.onComments}>{message.comments.length} Comments</Button>
+                                <Button id={"likes-" + i} variant={message.liked ? "success" : "outline-success"} onClick={this.onLike}>{message.likeCount} Likes</Button>
+                            </ListGroupItem>
+                        
+                        <div id={"comments-" + i} className="collapse">
+                            <Card.Body>
+                                <Form inline action="/Comments/PostComment" method="post">
+                                <div className="form-group mx-sm-3 mb-2" style={{width: 'calc(100% - 120px)'}}>
+                                    <input type="text" className="form-control"
+                                            style={{width: '100%'}} name="text" placeholder="Enter a comment..." />
+                                </div>
+                                <button type="submit" className="btn btn-outline-primary mb-2">SEND</button>
+                                </Form>
+                            </Card.Body>
+                            {message.comments.map(comment => {
+                                return <ListGroupItem>
+                                    <span style={{marginRight: '1rem'}}>
+                                        <a href={"#/Profile/"+comment.user}>@{comment.user}</a>
+                                        <small style={{marginLeft: '5px'}}>{this.stringifyTimestamp(comment.upload_time)}</small>
+                                    </span>
+                                    <br />
+                                    <span>{comment.text}</span>
+                                </ListGroupItem>
+                            })}
+                        </div>
+                        </ListGroup>
+                </Card>
+                })}
+            </div>
+        </div>
+    )
     }
 }

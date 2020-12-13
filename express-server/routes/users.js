@@ -67,10 +67,9 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         if (!req.session.userID) {
             res.sendStatus(StatusCodes.UNAUTHORIZED)
         } else {
-            roomsDB.find({}).toArray((err, arr) => {
+            roomsDB.find({users: {$all: [req.session.userID]}}).toArray((err, arr) => {
                 if(err) res.sendStatus(StatusCodes.NOT_FOUND)
                 else res.json(arr)
-                console.log(arr)
             })
         }
     })
@@ -98,7 +97,6 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         } else if(body.name === '' || body.new_password !== body.new_password2 || body.current_password !== (await usersDB.findOne({_id: req.session.userID})).password) {
             res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
         } else {
-            console.log('new password: '+ body.new_password)
             usersDB.updateOne({_id: req.session.userID}, {'$set': {password: body.new_password}})
             res.sendStatus(StatusCodes.OK)
         }

@@ -92,7 +92,7 @@ export default class SignUp extends Component {
                                         <Form>
                                             <Form.Group as={Row}>
                                             <Form.Label column sm="4">
-                                                <a href="/Login">Back to login</a>
+                                                <a href="#/Login">Back to login</a>
                                             </Form.Label>
                                             <Col sm="8">
                                                 <Button variant="success" style={{float: 'right'}} onClick={this.signup} 

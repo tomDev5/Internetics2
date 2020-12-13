@@ -52,7 +52,10 @@ export default class Profile extends Component {
     }
 
     updateName = () => {
-        this.setState({errorMessage: ''})
+        this.setState({
+            errorMessage: '',
+            successMessage: ''
+        })
         const recipeUrl = '/api/users/name'
         const postBody = {
             name: this.state.nameField
@@ -77,7 +80,10 @@ export default class Profile extends Component {
     }
 
     updatePassword = () =>{
-        this.setState({errorMessage: ''})
+        this.setState({
+            errorMessage: '',
+            successMessage: ''
+        })
         const recipeUrl = '/api/users/password'
         const postBody = {
             new_password: this.state.new_password,
