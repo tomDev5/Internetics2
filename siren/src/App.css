@@ -2,3 +2,8 @@
     background-color: #a9d0d9;
     border-color: #a9d0d9;
 }
+
+.fake-link {
+    color: rgb(0, 98, 255);
+    cursor: pointer;
+}

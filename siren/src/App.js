@@ -15,7 +15,11 @@ export default class App extends Component {
   state = {
     rooms: [],
     sirens: [],
-    selectedRoom: null
+    selectedRoom: null,
+    userData: {
+      name: null,
+      username: null
+    }
   }
 
   updateSelectedRoom = (newSelectedRoom) => {
@@ -93,12 +97,12 @@ export default class App extends Component {
                 return <>
                   <TopBar username={this.state.userData ? this.state.userData.username : null}></TopBar>
                     <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
-                    <div className="col-sm-2" style={{height: '100%'}}>
-                      <SideBar rooms={this.state.rooms} selectedRoom={this.state.selectedRoom} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
-                    </div>
-                    <div className="col-sm-10" style={{height: '100%'}}>
-                      <Feed sirens={this.state.sirens} getSirens={this.getSirens} selectedRoom={this.state.selectedRoom}></Feed>
-                    </div>
+                      <div className="col-sm-2" style={{height: '100%'}}>
+                        <SideBar rooms={this.state.rooms} selectedRoom={this.state.selectedRoom} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
+                      </div>
+                      <div className="col-sm-10" style={{height: '100%'}}>
+                        <Feed sirens={this.state.sirens} getSirens={this.getSirens} selectedRoom={this.state.selectedRoom} self={this.state.userData ? this.state.userData.username : ''}></Feed>
+                      </div>
                     </div>
                   </>
                 }} />
