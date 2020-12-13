@@ -1,18 +1,18 @@
 <div style="overflow-y: scroll; overflow-x: hidden;">
-    <div class="row" style="margin-right: 50px; margin-left: 50px;">
-        <div class="col-sm-6">
+    <div class="row" style="margin-right: 50px; margin-left: 50px; height: calc(100vh - 60px);">
+        <div class="col-sm-6" style="height: 100%;">
             <div class="title">
                 User List
             </div>
-            <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush" style="height: calc(100% - 60px); overflow-y: scroll;">
                 <li class="list-group-item" *ngFor="let user of users">{{ user.name }} - <a routerLink="/Profile/{{user._id}}">@{{ user._id }}</a></li>
             </ul>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6" style="height: 100%;">
             <div class="title">
                 Messages
             </div>
-            <div class="cards">
+            <div class="cards" style="height: calc(100% - 60px); overflow-y: scroll;">
                 <div class="card" *ngFor="let message of messages" style="margin-bottom: 15px; text-align: left">
                     <div class="card-header">
                         <a routerLink="/Profile/{{ message.user }}" style="text-decoration: none">@{{ message.user }}</a>

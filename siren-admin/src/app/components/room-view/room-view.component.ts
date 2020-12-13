@@ -30,11 +30,11 @@ export class RoomViewComponent implements OnInit, OnChanges {
 
     this.messages = [
       {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now(), comments: [{_id: '245123tghfuierdfnghor', user: 'omerlubin', text: 'COMMENT!', upload_time: 256442323}]},
-      {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+5000, comments: []},
-      {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+10000, comments: []},
-      {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
-      {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
-      {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
+      {_id: '124', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+5000, comments: []},
+      {_id: '125', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+10000, comments: []},
+      {_id: '126', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
+      {_id: '127', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
+      {_id: '128', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
 
     ]
   }

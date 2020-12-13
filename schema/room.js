@@ -62,3 +62,8 @@ db.Room.insertOne({
         }
     ]
 })
+
+db.Admin.insertOne({
+    _id: 'admin',
+    password: 'test'
+})
