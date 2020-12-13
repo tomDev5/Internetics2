@@ -18,7 +18,8 @@ export default class Profile extends Component {
         new_password: '',
         new_password2: '',
         current_password: '',
-        errorMessage: ''
+        errorMessage: '',
+        successMessage: ''
     }
 
     constructor(props) {
@@ -51,6 +52,7 @@ export default class Profile extends Component {
     }
 
     updateName = () => {
+        this.setState({errorMessage: ''})
         const recipeUrl = '/api/users/name'
         const postBody = {
             name: this.state.nameField
@@ -67,6 +69,34 @@ export default class Profile extends Component {
             .then(res => {
                 if (res.status === 200) {
                     this.getSelf()
+                    this.setState({successMessage: 'Name updated successfully.'})
+                } else {
+                    this.setState({errorMessage: 'Please try again in a few minutes.'})
+                }
+            })
+    }
+
+    updatePassword = () =>{
+        this.setState({errorMessage: ''})
+        const recipeUrl = '/api/users/password'
+        const postBody = {
+            new_password: this.state.new_password,
+            new_password2: this.state.new_password2,
+            current_password: this.state.current_password
+        }
+        const requestMetadata = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postBody)
+        }
+
+        fetch(recipeUrl, requestMetadata)
+            .then(res => {
+                if (res.status === 200) {
+                    this.getSelf()
+                    this.setState({successMessage: 'Password updated successfully.'})
                 } else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})
                 }
@@ -94,11 +124,6 @@ export default class Profile extends Component {
                                 <ListGroupItem>
                                     <Row>
                                         <Col>
-                                            <div style={{marginTop: '5px', color: 'grey'}}>
-                                                Last Updated: {this.state.userData.last_updated}
-                                            </div>
-                                        </Col>
-                                        <Col>
                                             <Button variant="success" style={{float: 'right'}} disabled={this.state.nameField === '' || this.state.nameField === this.state.userData.name} onClick={this.updateName}>Update Name</Button>
                                         </Col>
                                     </Row>
@@ -122,7 +147,7 @@ export default class Profile extends Component {
                                         Repeat New Password
                                     </Form.Label>
                                     <Col sm="10">
-                                        <Form.Control type="Password" onChange={(e)=>this.setState({new_password_2: e.target.value})}/>
+                                        <Form.Control type="Password" onChange={(e)=>this.setState({new_password2: e.target.value})}/>
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} controlId="formPlaintextEmail">
@@ -137,14 +162,16 @@ export default class Profile extends Component {
                             </Card.Body>
                             <ListGroup className="list-group-flush">
                                 <ListGroupItem>
-                                    <Button variant="success" style={{float: 'right'}} disabled={this.state.new_password === '' || this.state.new_password2 === '' || this.state.current_password === ''}>Update Password</Button>
+                                    <Button variant="success" style={{float: 'right'}}
+                                    disabled={this.state.new_password === '' || this.state.new_password2 === '' || this.state.current_password === ''}
+                                    onClick={this.updatePassword}>Update Password</Button>
                                 </ListGroupItem>
                             </ListGroup>
                     </Card>
-                    <Card style={{marginBottom: 15, textAlign: 'left', width: '100%', backgroundColor: '#dc3545', color: '#FFF'}} hidden={this.state.errorMessage.length===0}>
+                    <Card style={{marginBottom: 15, textAlign: 'left', width: '100%', backgroundColor: (this.state.errorMessage? '#dc3545': '#28a745'), color: '#FFF'}} hidden={!this.state.errorMessage && !this.state.successMessage}>
                             <Card.Body>
                             <Card.Text>
-                                Error: {this.state.errorMessage}
+                                {this.state.errorMessage+this.state.successMessage}
                             </Card.Text>
                             </Card.Body>
                     </Card>

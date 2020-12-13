@@ -49,22 +49,6 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         res.end()
     })
 
-    router.get('/rooms', async (req,res) => {
-        body = req.body
-        if (!req.session.userID) {
-            res.sendStatus(StatusCodes.UNAUTHORIZED)
-        } else {
-            let user = await usersDB.findOne({_id: req.session.userID})
-            if (!user) res.sendStatus(StatusCodes.NOT_FOUND)
-            else {
-                let rooms = await roomsDB.find({_id: 'room1'}, {projection: {_id: true, name: true}}).toArray()
-                res.json(rooms)
-            }
-        }
-        
-        res.end()
-    })
-
     router.get('/self', async (req,res) => {
         body = req.body
         if (!req.session.userID) {
@@ -73,10 +57,22 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             let user = await usersDB.findOne({_id: req.session.userID}, {projection: {_id: true, name: true}})
             if (user) res.json(user)
             else res.sendStatus(StatusCodes.NOT_FOUND)
-            
         }
         
         res.end()
+    })
+
+    router.get('/rooms', async (req,res) => {
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else {
+            roomsDB.find({}).toArray((err, arr) => {
+                if(err) res.sendStatus(StatusCodes.NOT_FOUND)
+                else res.json(arr)
+                console.log(arr)
+            })
+        }
     })
 
     router.post('/name', async (req,res) => {
@@ -88,6 +84,22 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
         } else {
             usersDB.updateOne({_id: req.session.userID}, {'$set': {name: body.name}})
+            res.sendStatus(StatusCodes.OK)
+        }
+        
+        res.end()
+    })
+
+    router.post('/password', async (req,res) => {
+        body = req.body
+        //content checks
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(body.name === '' || body.new_password !== body.new_password2 || body.current_password !== (await usersDB.findOne({_id: req.session.userID})).password) {
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
+        } else {
+            console.log('new password: '+ body.new_password)
+            usersDB.updateOne({_id: req.session.userID}, {'$set': {password: body.new_password}})
             res.sendStatus(StatusCodes.OK)
         }
         

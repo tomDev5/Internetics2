@@ -14,17 +14,15 @@ export default class App extends Component {
 
   state = {
     rooms: [],
-    room: null
+    selectedRoom: ''
   }
 
-  constructor(props) {
-    super(props)
-
+  componentDidMount(){
     this.getRooms()
   }
 
-  updateSelectedRoom = (room) => {
-    this.setState({room: room})
+  updateSelectedRoom = (newSelectedRoom) => {
+    this.setState({selectedRoom: newSelectedRoom})
   }
 
   getRooms = () => {
@@ -33,15 +31,18 @@ export default class App extends Component {
       method: 'GET'
     }
     fetch(recipeUrl, requestMetadata)
-      .then(res => res.json())
-      .then(json => this.setState({rooms: json}))
-      .catch(() => {
-        window.location.hash = '/Login'
+      .then(async res => {
+        let json = await res.json()
+        this.setState({rooms: json})
       })
+        .catch((e) => {
+            this.setState({errorMessage: 'Please try again in a few minutes.'})
+            console.log(e)
+        })
   }
 
   render() {
-    return (
+      return (
       <div className="App" style={{height: '100%'}}>
           <HashRouter>
             <Route path="/Feed" exact component={props=>{
@@ -49,10 +50,10 @@ export default class App extends Component {
                   <TopBar></TopBar>
                     <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
                     <div className="col-sm-2" style={{height: '100%'}}>
-                      <SideBar rooms={this.state.rooms} selectedRoom={this.state.room} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
+                      <SideBar rooms={this.state.rooms} selectedRoom={this.state.selectedRoom} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
                     </div>
                     <div className="col-sm-10" style={{height: '100%'}}>
-                      <Feed selectedRoom={this.state.room}></Feed>
+                      <Feed selectedRoom={this.state.selectedRoom} rooms={this.state.rooms}></Feed>
                     </div>
                     </div>
                   </>
@@ -62,7 +63,7 @@ export default class App extends Component {
               <TopBar></TopBar>
                 <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
                 <div className="col-sm-2" style={{height: '100%'}}>
-                  <SideBar rooms={this.state.rooms} selectedRoom={this.state.room} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
+                  <SideBar rooms={this.state.rooms} selectedRoom={this.state.selectedRoom} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
                 </div>
                 <div className="col-sm-10" style={{height: '100%'}}>
                   <Profile rooms={this.state.rooms}></Profile>

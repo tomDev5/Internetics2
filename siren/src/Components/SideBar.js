@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 
 export default class SideBar extends Component {
 
+    state={
+        
+    }
+
     onRoomClick = (e)=>{
         let id = e.target.id.split('-')[1]
         if (id === 'all') this.props.updateSelectedRoom(null)
         else this.props.updateSelectedRoom(id)
-    }
-
-    componentDidMount(){
-        
     }
 
     render() {

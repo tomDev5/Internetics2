@@ -7,6 +7,10 @@ import Button from 'react-bootstrap/Button'
 
 export default class TopBar extends Component {
 
+    state={
+        
+    }
+
     logout = () => {
         const recipeUrl = '/api/users/logout'
         const requestMetadata = {
@@ -27,7 +31,7 @@ export default class TopBar extends Component {
             <div>
                 <Navbar bg="primary" variant="dark">
                     <Navbar.Brand>Siren</Navbar.Brand>
-                    <Nav className="mr-auto">
+                    <Nav className="mr-auto"  style={{paddingTop: '.3125rem'}}>
                         {links.map(link => {
                             return <Nav.Link key={link.name} href={link.path} className={window.location.hash.startsWith(link.path) ? 'active' : ''}>{link.name}</Nav.Link>
                         })}

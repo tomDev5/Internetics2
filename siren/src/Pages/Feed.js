@@ -7,31 +7,7 @@ import Button from 'react-bootstrap/Button'
 export default class Feed extends Component {
 
     state={
-        all_messages: [],
-        messages: []
-    }
-
-    componentDidMount() {
-        let all_messages = [
-            {id: 'room1', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}, {user: 'tomlub', text: 'HELLO!'}], likeCount: 16, liked: true},
-            {id: 'room1', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: true},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: true},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: true},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: false},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: false},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: false},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: false},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: false},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: false},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: false},
-            {id: 'room2', user: 'tomlubin', room: 'A', text: 'HELLO!', comments: [{user: 'omerlub', text: 'HI!'}], likeCount: 16, liked: false},
-        ]
-        let messages = all_messages.filter(message => this.props.selectedRoom === null || message.id === this.props.selectedRoom)
-
-        this.setState({
-            all_messages: all_messages,
-            messages: messages
-        })
+        rooms: []
     }
 
     onLike = (e) => {
@@ -51,12 +27,26 @@ export default class Feed extends Component {
     }
 
     render() {
-        return (
+        if(this.props.rooms){
+            let displayMessages = []
+            if(!this.props.selectedRoom){
+                this.props.rooms.forEach(room=>{
+                    room.messages.forEach(message=>{
+                        displayMessages.push(message)
+                    })
+                })
+            }else{
+                this.props.rooms.filter(room=>room._id === this.props.selectedRoom)[0].messages.forEach(message=>{
+                    displayMessages.push(message)
+                })
+            }
+            console.log(displayMessages)
+            return (
             <div style={{height: '100%', overflowY: 'scroll'}}>
                 <div style={{height: '100%', margin: 15, marginLeft: 0}}>
-                    {this.state.messages.map((message, i)=>{
+                    {displayMessages.map((message, i)=>{
                         return <Card key={i} style={{marginBottom: 15, textAlign: 'left'}}>
-                            <Card.Header><a href={"#/Profile/"+message.user} style={{textDecoration:'none'}}>@{message.user}</a>, on room {message.room}</Card.Header>
+                            <Card.Header><a href={"#/Profile/"+message.user} style={{textDecoration:'none'}}>@{message.user}</a></Card.Header>
                             <Card.Body>{message.text}</Card.Body>
                             <ListGroup className="list-group-flush">
                                 <ListGroupItem>
@@ -87,5 +77,8 @@ export default class Feed extends Component {
                 </div>
             </div>
         )
+    }else{
+            return(<div></div>)
+        }
     }
 }
