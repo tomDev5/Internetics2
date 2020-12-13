@@ -21,10 +21,10 @@
                     <div class="card-body">{{ message.text }}</div>
                     <div className="list-group list-group-flush">
                         <div class="list-group-item">
-                            <button id="comments-{{ message._id }}-btn" class="btn btn-outline-dark" style="margin-right: 15px" (click)="onComments">{{ message.comments.length }} Comments</button>
-                            <button id="likes-{{ message._id }}-btn" class="btn btn-outline-success" (click)="onLike(message._id)">{{ message.likes }} Likes</button>
+                            <button id="comments-{{ message._id }}-btn" class="btn btn-outline-dark" style="margin-right: 15px" (click)="onCommentsBtnClick(message._id)">{{ message.comments.length }} Comments</button>
+                            <button id="likes-{{ message._id }}-btn" class="btn btn-outline-success" disabled>{{ message.likes }} Likes</button>
                         </div>
-                        <div id="comments- {{ message._id }}" className="collapse">
+                        <div id="comments- {{ message._id }}" class="collapse">
                             <div class="list-group-item" *ngFor="let comment of message.comments">
                                 <span style="margin-right: 1rem">
                                     <a routerLink="/Profile/{{ comment.user }}">@{{ comment.user }}</a>

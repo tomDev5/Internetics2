@@ -35,7 +35,7 @@ export class RoomViewComponent implements OnInit, OnChanges {
       {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
       {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
       {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
-      
+
     ]
   }
 
@@ -57,8 +57,18 @@ export class RoomViewComponent implements OnInit, OnChanges {
 
   }
 
-  onComments(){
-
+  onCommentsBtnClick(messageID:string){
+    let btn = document.getElementById('comments-'+messageID+'-btn')
+    let commentSection = document.getElementById('comments- '+messageID)
+    if(commentSection?.classList.contains('collapse')){
+      commentSection.classList.remove('collapse')
+      btn?.classList.remove('btn-outline-dark')
+      btn?.classList.add('btn-dark')
+    }else{
+      commentSection?.classList.add('collapse')
+      btn?.classList.remove('btn-dark')
+      btn?.classList.add('btn-outline-dark')
+    }
   }
 
 }
