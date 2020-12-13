@@ -46,7 +46,7 @@ export default class Login extends Component {
     render() {
         return (
             <div>
-                <Container style={{marginTop: '10vw', alignItems: 'center'}}>
+                <Container style={{marginTop: '30vh', alignItems: 'center'}}>
                     <Card style={{marginBottom: 15, textAlign: 'left', width: '100%'}}>
                         <Card.Header className="bg-primary light" style={{color: '#FFF'}}>Login to Siren™</Card.Header>
                             <Card.Body>

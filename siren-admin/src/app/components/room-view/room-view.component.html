@@ -1,0 +1,42 @@
+<div style="overflow-y: scroll; overflow-x: hidden;">
+    <div class="row" style="margin-right: 50px; margin-left: 50px;">
+        <div class="col-sm-6">
+            <div class="title">
+                User List
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let user of users">{{ user.name }} - <a routerLink="/Profile/{{user._id}}">@{{ user._id }}</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <div class="title">
+                Messages
+            </div>
+            <div class="cards">
+                <div class="card" *ngFor="let message of messages" style="margin-bottom: 15px; text-align: left">
+                    <div class="card-header">
+                        <a routerLink="/Profile/{{ message.user }}" style="text-decoration: none">@{{ message.user }}</a>
+                        <span style="margin-left: 5px">{{ stringifyTimestamp(message.upload_time) }}</span>
+                    </div>
+                    <div class="card-body">{{ message.text }}</div>
+                    <div className="list-group list-group-flush">
+                        <div class="list-group-item">
+                            <button id="comments-{{ message._id }}-btn" class="btn btn-outline-dark" style="margin-right: 15px" (click)="onComments">{{ message.comments.length }} Comments</button>
+                            <button id="likes-{{ message._id }}-btn" class="btn btn-outline-success" (click)="onLike(message._id)">{{ message.likes }} Likes</button>
+                        </div>
+                        <div id="comments- {{ message._id }}" className="collapse">
+                            <div class="list-group-item" *ngFor="let comment of message.comments">
+                                <span style="margin-right: 1rem">
+                                    <a routerLink="/Profile/{{ comment.user }}">@{{ comment.user }}</a>
+                                    <span style="margin-left: 5px">{{ stringifyTimestamp(comment.upload_time) }}</span>
+                                </span>
+                                <br />
+                                <span>{{ comment.text }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

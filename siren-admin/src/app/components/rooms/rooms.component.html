@@ -1,0 +1,7 @@
+<app-top-bar></app-top-bar>
+<ul class="nav nav-tabs">
+    <li class="nav-item" *ngFor="let room of rooms; let first = first">
+        <a id="room-{{room._id}}" class="nav-link clickable {{first ? 'active' :''}}" (click)="onTabClick(room._id)" active>{{ room.name }}</a>
+    </li>
+</ul>
+<app-room-view [roomID]="selectedRoomID"></app-room-view>

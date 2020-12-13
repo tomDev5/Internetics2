@@ -3,6 +3,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 
 const users = require('./routes/users')
+const admins = require('./routes/admins')
 
 const app = express()
 
@@ -25,4 +26,5 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }))
 
 app.use('/api/users', users)
+app.use('/api/admins', admins)
 app.listen(8080);

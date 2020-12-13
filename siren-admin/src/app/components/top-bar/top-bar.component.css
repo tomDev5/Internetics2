@@ -1,0 +1,12 @@
+.navbar{
+    display: block;
+}
+a.navbar-brand{
+    color: rgba(255,255,255,.5);
+}
+a.navbar-brand:hover{
+    color: #fff;
+}
+a.active{
+    color: #fff !important;
+}
