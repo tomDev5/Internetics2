@@ -24,31 +24,7 @@ export default class Profile extends Component {
 
     componentDidMount() {
         const { id } = this.props.params
-        if (id) {
-            this.getUser(id)
-        } else {
-            this.getSelf()
-        }
-    }
-
-    getSelf = () => {
-        const recipeUrl = '/api/users/self'
-        const requestMetadata = {
-            method: 'GET'
-        }
-        fetch(recipeUrl, requestMetadata)
-            .then(res => res.json())
-            .then(json => this.setState({
-                userData: {
-                    username: json._id,
-                    name: json.name
-                },
-                nameField: json.name,
-                self: true
-            }))
-            .catch(() => {
-                this.setState({errorMessage: 'Please try again in a few minutes.'})
-            })
+        this.getUser(id)
     }
 
     getUser = (id) => {
@@ -65,8 +41,7 @@ export default class Profile extends Component {
                     username: json._id,
                     name: json.name
                 },
-                nameField: json.name,
-                self: false
+                self: this.props.params.id === this.props.username
             }))
             .catch(() => {
                 this.setState({errorMessage: 'Please try again in a few minutes.'})
@@ -93,7 +68,6 @@ export default class Profile extends Component {
         fetch(recipeUrl, requestMetadata)
             .then(res => {
                 if (res.status === 200) {
-                    this.getSelf()
                     this.setState({successMessage: 'Name updated successfully.'})
                 } else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})
@@ -123,7 +97,6 @@ export default class Profile extends Component {
         fetch(recipeUrl, requestMetadata)
             .then(res => {
                 if (res.status === 200) {
-                    this.getSelf()
                     this.setState({successMessage: 'Password updated successfully.'})
                 } else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})

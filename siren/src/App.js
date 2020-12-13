@@ -14,6 +14,7 @@ export default class App extends Component {
 
   state = {
     rooms: [],
+    sirens: [],
     selectedRoom: null
   }
 
@@ -23,7 +24,32 @@ export default class App extends Component {
 
   componentDidMount() {
     this.getRooms()
+    this.getSirens()
+    this.getSelf()
   }
+
+  getSirens = () => {
+    const recipeUrl = '/api/users/sirens'
+    const requestMetadata = {
+        method: 'GET'
+    }
+    fetch(recipeUrl, requestMetadata)
+        .then(async res => {
+            let json = await res.json()
+            let sirens = {
+                null: []
+            }
+            json.forEach(({_id: room, value: room_sirens}) => {
+                sirens[room] = room_sirens
+                sirens[null].push(...room_sirens)
+            })
+            this.setState({sirens: sirens})
+        })
+        .catch((e) => {
+            this.setState({errorMessage: 'Please try again in a few minutes.'})
+            console.log(e)
+        })
+    }
 
   getRooms = () => {
     const recipeUrl = '/api/users/rooms'
@@ -41,32 +67,50 @@ export default class App extends Component {
         })
   }
 
+  getSelf = () => {
+    const recipeUrl = '/api/users/self'
+    const requestMetadata = {
+        method: 'GET'
+    }
+    fetch(recipeUrl, requestMetadata)
+        .then(res => res.json())
+        .then(json => this.setState({
+            userData: {
+                username: json._id,
+                name: json.name
+            }
+        }))
+        .catch(() => {
+            this.setState({errorMessage: 'Please try again in a few minutes.'})
+        })
+    }
+
   render() {
       return (
       <div className="App" style={{height: '100%'}}>
           <HashRouter>
             <Route path="/Feed" exact component={props=>{
                 return <>
-                  <TopBar></TopBar>
+                  <TopBar username={this.state.userData ? this.state.userData.username : null}></TopBar>
                     <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
                     <div className="col-sm-2" style={{height: '100%'}}>
                       <SideBar rooms={this.state.rooms} selectedRoom={this.state.selectedRoom} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
                     </div>
                     <div className="col-sm-10" style={{height: '100%'}}>
-                      <Feed selectedRoom={this.state.selectedRoom}></Feed>
+                      <Feed sirens={this.state.sirens} getSirens={this.getSirens} selectedRoom={this.state.selectedRoom}></Feed>
                     </div>
                     </div>
                   </>
                 }} />
-            <Route path="/Profile/:id?" exact component={props=>{
+            <Route path="/Profile/:id" exact component={props=>{
               return <>
-              <TopBar></TopBar>
+              <TopBar username={this.state.userData ? this.state.userData.username : ''}></TopBar>
                 <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
                 <div className="col-sm-2" style={{height: '100%'}}>
                   <SideBar rooms={this.state.rooms} selectedRoom={this.state.selectedRoom} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
                 </div>
                 <div className="col-sm-10" style={{height: '100%'}}>
-                  <Profile rooms={this.state.rooms} params={props.match.params}></Profile>
+                  <Profile rooms={this.state.rooms} username={this.state.userData ? this.state.userData.username: ''} params={props.match.params}></Profile>
                 </div>
                 </div>
               </>
@@ -75,7 +119,7 @@ export default class App extends Component {
               return <>
                 <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
                   <div className="col-sm-12">
-                    <Login getRooms={this.getRooms}></Login>
+                    <Login getRooms={this.getRooms} getSelf={this.getSelf}></Login>
                   </div>
                 </div>
                   </>

@@ -13,42 +13,11 @@ export default class Feed extends Component {
         newSiren: undefined
     }
 
-    constructor(props) {
-        super(props)
-    }
-
-    componentDidMount() {
-        this.getSirens()
-    }
-
-    getSirens = () => {
-        const recipeUrl = '/api/users/sirens'
-        const requestMetadata = {
-            method: 'GET'
-        }
-        fetch(recipeUrl, requestMetadata)
-            .then(async res => {
-                let json = await res.json()
-                let sirens = {
-                    null: []
-                }
-                json.forEach(({_id: room, value: room_sirens}) => {
-                    sirens[room] = room_sirens
-                    sirens[null].push(...room_sirens)
-                })
-                this.setState({sirens: sirens})
-            })
-            .catch((e) => {
-                this.setState({errorMessage: 'Please try again in a few minutes.'})
-                console.log(e)
-            })
-    }
-
     onLike = (id) => {
         const recipeUrl = '/api/users/like'
         const postBody = {
             siren: id,
-            room: this.state.sirens[this.props.selectedRoom].filter(siren => siren._id === id)[0].room
+            room: this.props.sirens[this.props.selectedRoom].filter(siren => siren._id === id)[0].room
         }
         const requestMetadata = {
             method: 'POST',
@@ -61,7 +30,7 @@ export default class Feed extends Component {
         fetch(recipeUrl, requestMetadata)
             .then(res => {
                 if (res.status === 200) {
-                    this.getSirens()
+                    this.props.getSirens()
                 } else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})
                 }
@@ -82,7 +51,7 @@ export default class Feed extends Component {
         const recipeUrl = '/api/users/comment'
         const postBody = {
             siren: id,
-            room: this.state.sirens[this.props.selectedRoom].filter(siren => siren._id === id)[0].room,
+            room: this.props.sirens[this.props.selectedRoom].filter(siren => siren._id === id)[0].room,
             text: text
         }
         const requestMetadata = {
@@ -96,7 +65,7 @@ export default class Feed extends Component {
         fetch(recipeUrl, requestMetadata)
             .then(res => {
                 if (res.status === 200) {
-                    this.getSirens()
+                    this.props.getSirens()
                 } else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})
                 }
@@ -123,7 +92,7 @@ export default class Feed extends Component {
                     this.setState({
                         newSiren: undefined
                     })
-                    this.getSirens()
+                    this.props.getSirens()
                 } else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})
                 }
@@ -167,7 +136,7 @@ export default class Feed extends Component {
                     </Card.Body>
                 </Card>
 
-                {this.state.sirens[this.props.selectedRoom] ? this.state.sirens[this.props.selectedRoom].sort((a, b) => a.upload_time < b.upload_time).map((siren)=>{
+                {this.props.sirens[this.props.selectedRoom] ? this.props.sirens[this.props.selectedRoom].sort((a, b) => a.upload_time < b.upload_time).map((siren)=>{
                     return <Card key={siren._id} style={{marginBottom: 15, textAlign: 'left'}}>
                         <Card.Header>
                             <a href={"#/Profile/"+siren.user} style={{textDecoration:'none'}}>@{siren.user}</a>

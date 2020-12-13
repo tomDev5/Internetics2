@@ -33,6 +33,7 @@ export default class Login extends Component {
             .then(res => {
                 if (res.status === 200) {
                     this.props.getRooms()
+                    this.props.getSelf()
                     window.location.hash = '/Feed'
                 } else if(res.status === 401){
                     this.setState({errorMessage: 'Username and/or password are incorrect.'})

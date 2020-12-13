@@ -14,7 +14,7 @@ export default class TopBar extends Component {
     logout = () => {
         const recipeUrl = '/api/users/logout'
         const requestMetadata = {
-        method: 'POST'
+            method: 'POST'
         }
         fetch(recipeUrl, requestMetadata)
             .then(res => window.location.hash = '/Login')
@@ -24,7 +24,7 @@ export default class TopBar extends Component {
 
         let links = [
             {name: 'Feed', path: '#/Feed'},
-            {name: 'Profile', path: '#/Profile'},
+            {name: 'Profile', path: '#/Profile/' + this.props.username},
         ]
 
         return (
