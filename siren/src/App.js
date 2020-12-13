@@ -12,17 +12,21 @@ import SignUp from './Pages/SignUp';
 
 export default class App extends Component {
 
-  state = {
-    rooms: [],
-    selectedRoom: ''
+  constructor(props) {
+    super(props)
   }
 
-  componentDidMount(){
-    this.getRooms()
+  state = {
+    rooms: [],
+    selectedRoom: null
   }
 
   updateSelectedRoom = (newSelectedRoom) => {
     this.setState({selectedRoom: newSelectedRoom})
+  }
+
+  componentDidMount() {
+    this.getRooms()
   }
 
   getRooms = () => {
@@ -53,7 +57,7 @@ export default class App extends Component {
                       <SideBar rooms={this.state.rooms} selectedRoom={this.state.selectedRoom} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
                     </div>
                     <div className="col-sm-10" style={{height: '100%'}}>
-                      <Feed selectedRoom={this.state.selectedRoom} rooms={this.state.rooms}></Feed>
+                      <Feed selectedRoom={this.state.selectedRoom}></Feed>
                     </div>
                     </div>
                   </>

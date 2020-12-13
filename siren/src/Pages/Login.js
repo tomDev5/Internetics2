@@ -15,7 +15,7 @@ export default class Login extends Component {
         errorMessage: ''
     }
     
-    login = ()=>{
+    login = () => {
         const recipeUrl = '/api/users/Login'
         const postBody = {
             username: this.state.username,
@@ -47,8 +47,8 @@ export default class Login extends Component {
             <div>
                 <Container style={{marginTop: '10vw', alignItems: 'center'}}>
                     <Card style={{marginBottom: 15, textAlign: 'left', width: '100%'}}>
-                                <Card.Header className="bg-primary light" style={{color: '#FFF'}}>Login to Siren™</Card.Header>
-                                <Card.Body>
+                        <Card.Header className="bg-primary light" style={{color: '#FFF'}}>Login to Siren™</Card.Header>
+                            <Card.Body>
                                 <Form>
                                     <Form.Group as={Row} controlId="formPlaintextEmail">
                                         <Form.Label column sm="2">
@@ -67,11 +67,11 @@ export default class Login extends Component {
                                         </Col>
                                     </Form.Group>
                                 </Form>
-                                </Card.Body>
-                                <ListGroup className="list-group-flush">
-                                    <ListGroupItem>
-                                        <Form>
-                                            <Form.Group as={Row}>
+                            </Card.Body>
+                            <ListGroup className="list-group-flush">
+                                <ListGroupItem>
+                                    <Form>
+                                        <Form.Group as={Row}>
                                             <Form.Label column sm="4">
                                                 <a href="#/SignUp">Sign Up</a>
                                                 <span>  ·  </span>
