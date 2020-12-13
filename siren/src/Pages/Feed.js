@@ -15,7 +15,9 @@ export default class Feed extends Component {
 
     constructor(props) {
         super(props)
+    }
 
+    componentDidMount() {
         this.getSirens()
     }
 
@@ -42,11 +44,28 @@ export default class Feed extends Component {
             })
     }
 
-    onLike = (e) => {
-        /*let temp = this.state.sirens
-        let id = e.target.id.split('-')[1]
-        temp[id].liked = !temp[id].liked
-        this.setState({sirens: temp})*/
+    onLike = (id) => {
+        const recipeUrl = '/api/users/like'
+        const postBody = {
+            siren: id,
+            room: this.state.sirens[this.props.selectedRoom].filter(siren => siren._id === id)[0].room
+        }
+        const requestMetadata = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postBody)
+        }
+
+        fetch(recipeUrl, requestMetadata)
+            .then(res => {
+                if (res.status === 200) {
+                    this.getSirens()
+                } else {
+                    this.setState({errorMessage: 'Please try again in a few minutes.'})
+                }
+            })
     }
 
     onComments = (e) => {
@@ -101,6 +120,9 @@ export default class Feed extends Component {
         fetch(recipeUrl, requestMetadata)
             .then(res => {
                 if (res.status === 200) {
+                    this.setState({
+                        newSiren: undefined
+                    })
                     this.getSirens()
                 } else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})
@@ -155,7 +177,7 @@ export default class Feed extends Component {
                         <ListGroup className="list-group-flush">
                             <ListGroupItem>
                                 <Button id={"comments-" + siren._id + "-btn"} variant="outline-dark" style={{marginRight: 15}} onClick={this.onComments}>{siren.comments.length} Comments</Button>
-                                <Button id={"likes-" + siren._id} variant={siren.liked ? "success" : "outline-success"} onClick={this.onLike}>{siren.likeCount} Likes</Button>
+                                <Button id={"likes-" + siren._id + "-btn"} variant={siren.liked ? "success" : "outline-success"} onClick={() => this.onLike(siren._id)}>{siren.likeCount} Likes</Button>
                             </ListGroupItem>
                         
                         <div id={"comments-" + siren._id} className="collapse">

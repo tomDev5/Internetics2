@@ -63,6 +63,17 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         }
     })
 
+    router.get('/user', async (req,res) => {
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else {
+            usersDB.findOne({_id: req.query.id}, {projection: {_id: true, name: true}})
+                .then((user) => res.json(user).end())
+                .catch((err) => res.sendStatus(StatusCodes.NOT_FOUND).end())
+        }
+    })
+
     router.get('/rooms', async (req,res) => {
         body = req.body
         if (!req.session.userID) {
@@ -87,12 +98,18 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
                 },
                 function(key, values) {
                     const sirens = [].concat.apply([], values)
-                    sirens.forEach(siren => {siren.room = key; return siren})
+                    sirens.forEach(siren => {
+                        siren.room = key
+                        siren.likeCount = siren.likes.length
+                        siren.liked = siren.likes.includes(userID)
+                        return siren
+                    })
                     return sirens
                 },
                 {
                     query: {users: {$all: [req.session.userID]}},
-                    out: {inline: 1}
+                    out: {inline: 1},
+                    scope: {userID: req.session.userID}
                 }
             )
 
@@ -169,6 +186,20 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
 
             roomsDB.updateOne({_id: body.room, 'sirens._id': body.siren}, {$push: {'sirens.$.comments': newComment}})
             res.sendStatus(StatusCodes.OK)
+        }
+        
+        res.end()
+    })
+
+    router.post('/like', async (req,res) => {
+        body = req.body
+        //content checks
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(!body.room || !body.siren) {
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
+        } else {
+            // TODO: Toggle the like
         }
         
         res.end()

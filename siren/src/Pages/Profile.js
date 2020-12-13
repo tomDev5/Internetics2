@@ -9,10 +9,10 @@ import Col from 'react-bootstrap/Col'
 export default class Profile extends Component {
 
     state={
+        self: false,
         userData: {
             username: '',
-            name: '',
-            last_updated: ''
+            name: ''
         },
         nameField: '',
         new_password: '',
@@ -22,29 +22,51 @@ export default class Profile extends Component {
         successMessage: ''
     }
 
-    constructor(props) {
-        super(props)
-
-        this.getSelf()
-    }
-
-    componentDidMount(){
-        this.setState({nameField: this.state.userData.name})
+    componentDidMount() {
+        const { id } = this.props.params
+        if (id) {
+            this.getUser(id)
+        } else {
+            this.getSelf()
+        }
     }
 
     getSelf = () => {
         const recipeUrl = '/api/users/self'
         const requestMetadata = {
-        method: 'GET'
+            method: 'GET'
         }
         fetch(recipeUrl, requestMetadata)
             .then(res => res.json())
             .then(json => this.setState({
                 userData: {
                     username: json._id,
-                    name: json.name,
-                    last_updated: '2019__'
-                }
+                    name: json.name
+                },
+                nameField: json.name,
+                self: true
+            }))
+            .catch(() => {
+                this.setState({errorMessage: 'Please try again in a few minutes.'})
+            })
+    }
+
+    getUser = (id) => {
+        const recipeUrl = '/api/users/user?' + new URLSearchParams({
+            id: id,
+        })
+        const requestMetadata = {
+            method: 'GET'
+        }
+        fetch(recipeUrl, requestMetadata)
+            .then(res => res.json())
+            .then(json => this.setState({
+                userData: {
+                    username: json._id,
+                    name: json.name
+                },
+                nameField: json.name,
+                self: false
             }))
             .catch(() => {
                 this.setState({errorMessage: 'Please try again in a few minutes.'})
@@ -113,7 +135,9 @@ export default class Profile extends Component {
         return (
             <div style={{margin: 15, marginLeft: 0}}>
                 <Card style={{marginBottom: 15, textAlign: 'left'}}>
-                            <Card.Header>Your Profile - @{this.state.userData.username}</Card.Header>
+                            <Card.Header>
+                                <span hidden={!this.state.self}>Your Profile - </span>
+                                @{this.state.userData.username}</Card.Header>
                             <Card.Body>
                             <Form>
                                 <Form.Group as={Row} controlId="formPlaintextEmail">
@@ -121,12 +145,12 @@ export default class Profile extends Component {
                                         Name
                                     </Form.Label>
                                     <Col sm="10">
-                                        <Form.Control type="name" defaultValue={this.state.userData.name}  onChange={(e)=>this.setState({nameField: e.target.value})}/>
+                                        <Form.Control type="name" defaultValue={this.state.userData.name} disabled={!this.state.self} onChange={(e)=>this.setState({nameField: e.target.value})}/>
                                     </Col>
                                 </Form.Group>
                             </Form>
                             </Card.Body>
-                            <ListGroup className="list-group-flush">
+                            <ListGroup className="list-group-flush" hidden={!this.state.self}>
                                 <ListGroupItem>
                                     <Row>
                                         <Col>
@@ -136,7 +160,7 @@ export default class Profile extends Component {
                                 </ListGroupItem>
                             </ListGroup>
                     </Card>
-                    <Card style={{marginBottom: 15, textAlign: 'left'}}>
+                    <Card style={{marginBottom: 15, textAlign: 'left'}} hidden={!this.state.self}>
                             <Card.Header>Update Password</Card.Header>
                             <Card.Body>
                             <Form>

@@ -12,10 +12,6 @@ import SignUp from './Pages/SignUp';
 
 export default class App extends Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   state = {
     rooms: [],
     selectedRoom: null
@@ -62,7 +58,7 @@ export default class App extends Component {
                     </div>
                   </>
                 }} />
-            <Route path="/Profile" exact component={props=>{
+            <Route path="/Profile/:id?" exact component={props=>{
               return <>
               <TopBar></TopBar>
                 <div className="row no-gutters" style={{height: 'calc(100% - 56px)'}}>
@@ -70,7 +66,7 @@ export default class App extends Component {
                   <SideBar rooms={this.state.rooms} selectedRoom={this.state.selectedRoom} updateSelectedRoom={this.updateSelectedRoom}></SideBar>
                 </div>
                 <div className="col-sm-10" style={{height: '100%'}}>
-                  <Profile rooms={this.state.rooms}></Profile>
+                  <Profile rooms={this.state.rooms} params={props.match.params}></Profile>
                 </div>
                 </div>
               </>
