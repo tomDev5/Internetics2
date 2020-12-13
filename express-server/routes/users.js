@@ -156,14 +156,58 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
         } else {
             const newSiren = {
-                _id: ObjectID(),
+                _id: ObjectID().toString(),
                 user: req.session.userID,
                 text: body.siren,
                 comments: [],
-                upload_time: new Date().getTime()
+                upload_time: new Date().getTime(),
+                likes: []
             }
 
             roomsDB.updateOne({_id: body.room}, {$push: {sirens: newSiren}})
+            res.sendStatus(StatusCodes.OK)
+        }
+        
+        res.end()
+    })
+
+    router.post('/siren/edit', async (req,res) => {
+        body = req.body
+        //content checks
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(!body.room || !body.siren || !body.text) {
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
+        } else {
+
+            roomsDB.updateOne({
+                '_id': body.room,
+                'sirens._id': body.siren
+            },
+            {
+                '$set': {'sirens.$.text': body.text}
+            })
+            res.sendStatus(StatusCodes.OK)
+        }
+        
+        res.end()
+    })
+
+    router.post('/siren/delete', async (req,res) => {
+        body = req.body
+        //content checks
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(!body.room || !body.siren) {
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
+        } else {
+
+            roomsDB.updateOne({
+                '_id': body.room
+            },
+            {
+                '$pull': {'sirens': {'_id': body.siren}}
+            })
             res.sendStatus(StatusCodes.OK)
         }
         
@@ -179,6 +223,7 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
         } else {
             const newComment = {
+                _id: ObjectID().toString(),
                 user: req.session.userID,
                 text: body.text,
                 upload_time: new Date().getTime()
@@ -191,15 +236,72 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         res.end()
     })
 
+    router.post('/comment/edit', async (req,res) => {
+        body = req.body
+        //content checks
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(!body.room || !body.siren || !body.comment || !body.text) {
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
+        } else {
+
+            roomsDB.updateOne({
+                    '_id': body.room,
+                },
+                {
+                    '$set': {'sirens.$[i].comments.$[j].text': body.text}
+                },
+                {
+                    arrayFilters: [{
+                            "i._id": body.siren
+                        }, {
+                            "j._id": body.comment
+                    }]
+                })
+            res.sendStatus(StatusCodes.OK)
+        }
+        
+        res.end()
+    })
+
+    router.post('/comment/delete', async (req,res) => {
+        body = req.body
+        //content checks
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(!body.room || !body.siren || !body.comment) {
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
+        } else {
+
+            roomsDB.updateOne({
+                '_id': body.room,
+                'sirens._id': body.siren
+            },
+            {
+                '$pull': {'sirens.$.comments': {'_id': body.comment}}
+            })
+            res.sendStatus(StatusCodes.OK)
+        }
+        
+        res.end()
+    })
+
     router.post('/like', async (req,res) => {
         body = req.body
         //content checks
         if (!req.session.userID) {
             res.sendStatus(StatusCodes.UNAUTHORIZED)
-        } else if(!body.room || !body.siren) {
+        } else if(!body.room || !body.siren || !body.action) {
             res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
         } else {
-            // TODO: Toggle the like
+                roomsDB.updateOne({
+                    '_id': body.room,
+                    'sirens._id': body.siren
+                },
+                body.action === 'push' ?
+                    {'$push': {'sirens.$.likes': req.session.userID}} :
+                    {'$pull': {'sirens.$.likes': req.session.userID}}
+            )
         }
         
         res.end()
