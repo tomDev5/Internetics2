@@ -7,7 +7,8 @@ import Button from 'react-bootstrap/Button'
 export default class Feed extends Component {
 
     state={
-        rooms: []
+        rooms: [],
+        newMessage: undefined
     }
 
     onLike = (e) => {
@@ -24,6 +25,37 @@ export default class Feed extends Component {
         } else {
             el.classList.add('collapse')
         }
+    }
+
+    onTextAreaChange = (e) => {
+        if(e.target.value === '')
+            this.setState({newMessage: undefined})
+        else this.setState({newMessage: e.target.value})
+    }
+
+    sendNewMessage = () => {
+        const recipeUrl = '/api/users/new_message'
+        const postBody = {
+            room: this.props.selectedRoom,
+            message: this.state.newMessage
+        }
+        const requestMetadata = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postBody)
+        }
+
+        fetch(recipeUrl, requestMetadata)
+            .then(res => {
+                if (res.status === 200) {
+                    this.getSelf()
+                    this.setState({successMessage: 'Password updated successfully.'})
+                } else {
+                    this.setState({errorMessage: 'Please try again in a few minutes.'})
+                }
+            })
     }
 
     stringifyTimestamp = (timestamp) => {
@@ -45,6 +77,32 @@ export default class Feed extends Component {
         return (
         <div style={{height: '100%', overflowY: 'scroll'}}>
             <div style={{height: '100%', margin: 15, marginLeft: 0}}>
+                <Card style={{marginBottom: 15, textAlign: 'left'}} hidden={!this.props.selectedRoom}>
+                    <Card.Header>New Siren</Card.Header>
+                    <Card.Body><Form.Control as="textarea" rows={3} onChange={this.onTextAreaChange}/></Card.Body>
+                    <ListGroup className="list-group-flush">
+                        <ListGroupItem>
+                        <Button onClick={this.sendNewMessage} style={{float: 'right'}}>Send</Button>
+                        </ListGroupItem>
+                    
+                        <div id={"comments-"} className="collapse">
+                            <Card.Body>
+                                <Form inline action="/Comments/PostComment" method="post">
+                                <div className="form-group mx-sm-3 mb-2" style={{width: 'calc(100% - 120px)'}}>
+                                    <input type="text" className="form-control"
+                                            style={{width: '100%'}} name="text" placeholder="Enter a comment..." />
+                                </div>
+                                <button type="submit" className="btn btn-outline-primary mb-2">SEND</button>
+                                </Form>
+                            </Card.Body>
+                            return <ListGroupItem>
+                                <span style={{marginRight: '1rem'}}>aaaaaaaaaaaa</span>
+                                <span>bbbbbbbbb</span>
+                            </ListGroupItem>
+                        </div>
+                    </ListGroup>
+                </Card>
+
                 {displayMessages.sort((a, b) => a.upload_time < b.upload_time).map((message, i)=>{
                     return <Card key={i} style={{marginBottom: 15, textAlign: 'left'}}>
                         <Card.Header>
