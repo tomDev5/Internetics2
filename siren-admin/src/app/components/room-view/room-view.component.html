@@ -5,7 +5,13 @@
                 User List
             </div>
             <ul class="list-group list-group-flush" style="height: calc(100% - 60px); overflow-y: scroll;">
-                <li class="list-group-item" *ngFor="let user of users">{{ user.name }} - <a routerLink="/Profile/{{user._id}}">@{{ user._id }}</a></li>
+                <li class="list-group-item" style="" *ngFor="let user of users">
+                    <a routerLink="/Profile/{{user}}">@{{ user }}</a>
+                    <button id="remove-user-{{ user }}-btn" class="btn btn-danger" style="float: right" (click)="removeUser(user)">-</button>
+                </li>
+                <li style="text-align: center; margin-top: 15px;">
+                    <button id="add-user-btn" class="btn btn-success" style="width: 90%" (click)="addUser()">Add user</button>
+                </li>
             </ul>
         </div>
         <div class="col-sm-6" style="height: 100%;">
@@ -22,13 +28,17 @@
                     <div className="list-group list-group-flush">
                         <div class="list-group-item">
                             <button id="comments-{{ message._id }}-btn" class="btn btn-outline-dark" style="margin-right: 15px" (click)="onCommentsBtnClick(message._id)">{{ message.comments.length }} Comments</button>
-                            <button id="likes-{{ message._id }}-btn" class="btn btn-outline-success" disabled>{{ message.likes }} Likes</button>
+                            <button id="likes-{{ message._id }}-btn" class="btn btn-outline-success" disabled>{{ message.likes.length }} Likes</button>
+                            <button id="delete-msg-{{ message._id }}-btn" class="btn btn-danger" style="float: right" (click)="deleteMessage(message._id)">Delete message</button>
                         </div>
-                        <div id="comments- {{ message._id }}" class="collapse">
+                        <div id="comments-{{ message._id }}" class="collapse">
                             <div class="list-group-item" *ngFor="let comment of message.comments">
-                                <span style="margin-right: 1rem">
+                                <span class="col-sm-8" style="margin-right: 1rem; padding-left: 0px;">
                                     <a routerLink="/Profile/{{ comment.user }}">@{{ comment.user }}</a>
-                                    <span style="margin-left: 5px">{{ stringifyTimestamp(comment.upload_time) }}</span>
+                                    <span style="margin-left: 10px">{{ stringifyTimestamp(comment.upload_time) }}</span>
+                                </span>
+                                <span class="col-sm-4">
+                                    <button id="delete-cmnt-{{ message._id }}-{{ comment._id }}-btn" class="btn btn-danger" style="float: right" (click)="deleteComment(message._id, comment._id)">-</button>
                                 </span>
                                 <br />
                                 <span>{{ comment.text }}</span>

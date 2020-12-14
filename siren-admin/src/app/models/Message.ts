@@ -4,12 +4,12 @@ export class Message {
     _id:string;
     user: string;
     text: string;
-    likes: number;
+    likes: string[];
     upload_time: number;
     comments: any[]
 
 
-    constructor(id:string, user:string, text:string, likes:number, timestamp:number, comments:Comment[]){
+    constructor(id:string, user:string, text:string, likes:string[], timestamp:number, comments:Comment[]){
         this._id = id
         this.user = user
         this.text = text

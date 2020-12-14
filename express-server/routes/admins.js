@@ -40,17 +40,31 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             res.sendStatus(StatusCodes.UNAUTHORIZED)
         } else {
 
-            roomsDB.find().toArray((err,arr)=>{
+            roomsDB.find({}).project({_id: 1, name: 1}).toArray((err,arr)=>{
                 if(err || arr.length===0) res.sendStatus(StatusCodes.UNAUTHORIZED)
                 else{
-                    roomsDB.find({projection: {_id: true, name: true}})
-                    .toArray((err, arr) => {
-                        console.log(arr)
-                        if(err) res.sendStatus(StatusCodes.NOT_FOUND)
-                        else res.json(arr)
-                    })
+                    if(err) res.sendStatus(StatusCodes.NOT_FOUND)
+                    else res.json(arr)
                 }
             })
+        }
+    })
+
+    router.get('/room', async (req,res) => {
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else {
+            roomsDB.findOne({_id: req.query.roomID}).then(result=>res.send(result))
+        }
+    })
+
+    router.delete('/message', async (req,res) => {
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else {
+            roomsDB.updateOne({_id: req.query.roomID},{$pull:{sirens:{$in:[req.query.messageID]}}}).then(result=>console.log(result))
         }
     })
 })
