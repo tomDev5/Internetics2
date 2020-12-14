@@ -10,6 +10,8 @@ import { RoomViewComponent } from './components/room-view/room-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { DataComponent } from './components/data/data.component';
 import { FeedComponent } from './components/feed/feed.component';
+import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-to-room.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import { FeedComponent } from './components/feed/feed.component';
     RoomViewComponent,
     LoginComponent,
     DataComponent,
-    FeedComponent
+    FeedComponent,
+    AddUserToRoomComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

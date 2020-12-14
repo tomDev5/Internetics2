@@ -29,7 +29,6 @@ export class RoomsComponent implements OnInit {
   getRooms = () => {
     this.http.get<any>("/api/admins/rooms").subscribe(
       data=>{
-        console.log(data)
         this.rooms = data
         this.onTabClick(data[0]._id)
       },
