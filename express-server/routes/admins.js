@@ -169,6 +169,17 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         }
     })
 
+    router.get('/postsOverTime', async (req, res) => {
+        await roomsDB.aggregate([
+            {'$project' : {'sirens': true, _id: false}},
+            {'$unwind' : '$sirens'},
+            {'$replaceRoot' : {'newRoot': '$sirens'}},
+            {'$project' : {'upload_time': true, _id: false}},
+          ]).toArray((err,data)=>{
+            console.log(res.send(data))
+        })
+    })
+
 })
 
 module.exports = router

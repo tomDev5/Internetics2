@@ -13,6 +13,7 @@ import { FeedComponent } from './components/feed/feed.component';
 import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-to-room.component';
 import { FormsModule } from '@angular/forms';
 import { CreateNewRoomModalComponent } from './components/create-new-room-modal/create-new-room-modal.component';
+import { GraphDirectiveDirective } from './directives/graph-directive.directive';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CreateNewRoomModalComponent } from './components/create-new-room-modal/
     DataComponent,
     AddUserToRoomComponent,
     CreateNewRoomModalComponent,
-    FeedComponent
+    FeedComponent,
+    GraphDirectiveDirective
   ],
   imports: [
     BrowserModule,
