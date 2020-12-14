@@ -7,6 +7,7 @@ import { RoomsComponent } from './components/rooms/rooms.component';
 import { SearchSirenComponent } from './components/search-siren/search-siren.component';
 
 const routes: Routes = [
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'rooms', component: RoomsComponent},
   {path: 'data',component: DataComponent},
   {path: 'login', component: LoginComponent},

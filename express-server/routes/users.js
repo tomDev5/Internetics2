@@ -300,7 +300,6 @@ module.exports = function(emitEvent) {
 
         router.post('/like', async (req,res) => {
             body = req.body
-            //content checks
             if (!req.session.userID) {
                 res.sendStatus(StatusCodes.UNAUTHORIZED)
             } else if(!body.room || !body.siren || !body.action) {
@@ -317,6 +316,15 @@ module.exports = function(emitEvent) {
             }
             
             res.end()
+        })
+
+        router.post('/authenticate', async (req,res) => {
+            body = req.body
+            if (!req.session.userID) {
+                res.sendStatus(StatusCodes.UNAUTHORIZED)
+            } else {
+                res.sendStatus(StatusCodes.OK)
+            }
         })
     })
     

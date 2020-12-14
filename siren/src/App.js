@@ -30,6 +30,22 @@ export default class App extends Component {
     this.getRooms()
     this.getSirens()
     this.getSelf()
+
+    this.authenticate()
+  }
+
+  authenticate = () => {
+    const recipeUrl = '/api/users/authenticate'
+        const requestMetadata = {
+            method: 'POST'
+        }
+        fetch(recipeUrl, requestMetadata).then(res=>{
+          if(res.status === 200){
+            window.location.hash = "/feed"
+          }else{
+            window.location.hash = "/login"
+          }
+        })
   }
 
   getSirens = () => {
