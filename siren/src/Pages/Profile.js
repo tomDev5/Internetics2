@@ -12,9 +12,11 @@ export default class Profile extends Component {
         self: false,
         userData: {
             username: '',
-            name: ''
+            name: '',
+            description: ''
         },
         nameField: '',
+        descField: '',
         new_password: '',
         new_password2: '',
         current_password: '',
@@ -39,8 +41,11 @@ export default class Profile extends Component {
             .then(json => this.setState({
                 userData: {
                     username: json._id,
-                    name: json.name
+                    name: json.name,
+                    description: json.description
                 },
+                nameField: json.name,
+                descField: json.description,
                 self: this.props.params.id === this.props.username
             }))
             .catch(() => {
@@ -55,7 +60,8 @@ export default class Profile extends Component {
         })
         const recipeUrl = '/api/users/name'
         const postBody = {
-            name: this.state.nameField
+            name: this.state.nameField,
+            description: this.state.descField
         }
         const requestMetadata = {
             method: 'POST',
@@ -121,13 +127,29 @@ export default class Profile extends Component {
                                         <Form.Control type="name" defaultValue={this.state.userData.name} disabled={!this.state.self} onChange={(e)=>this.setState({nameField: e.target.value})}/>
                                     </Col>
                                 </Form.Group>
+                                <Form.Group as={Row} controlId="formPlaintextEmail">
+                                    <Form.Label column sm="2">
+                                        Description
+                                    </Form.Label>
+                                    <Col sm="10">
+                                        <Form.Control as="textarea" defaultValue={this.state.userData.description} disabled={!this.state.self} onChange={(e)=>this.setState({descField: e.target.value})}/>
+                                    </Col>
+                                </Form.Group>
                             </Form>
                             </Card.Body>
                             <ListGroup className="list-group-flush" hidden={!this.state.self}>
                                 <ListGroupItem>
                                     <Row>
                                         <Col>
-                                            <Button variant="success" style={{float: 'right'}} disabled={this.state.nameField === '' || this.state.nameField === this.state.userData.name} onClick={this.updateName}>Update Name</Button>
+                                            <Button variant="success" style={{float: 'right'}}
+                                                disabled={
+                                                    (this.state.nameField === '' || this.state.nameField === this.state.userData.name)
+                                                    &&
+                                                    (this.state.descField === '' || this.state.descField === this.state.userData.description)
+                                                }
+                                                onClick={this.updateName}>
+                                                    Update Profile
+                                                </Button>
                                         </Col>
                                     </Row>
                                 </ListGroupItem>

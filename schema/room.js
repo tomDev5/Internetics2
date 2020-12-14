@@ -2,9 +2,9 @@ use Siren
 db.dropDatabase()
 use Siren
 
-db.User.insertOne({_id: "tomlubin", name: "Tom", password: "test"})
-db.User.insertOne({_id: "tomlub", name: "Tom2", password: "test"})
-db.User.insertOne({_id: "omerlubin", name: "Omer", password: "test"})
+db.User.insertOne({_id: "tomlubin", description: "I am Tom Lubin!", name: "Tom", password: "test"})
+db.User.insertOne({_id: "tomlub", description: "I am Tom Lub!", name: "Tom2", password: "test"})
+db.User.insertOne({_id: "omerlubin", description: "I am Omer lubin!", name: "Omer", password: "test"})
 
 db.Room.insertOne({
     _id: "5fd57646415578f15f6fccb7",

@@ -75,8 +75,6 @@ export default class Login extends Component {
                                         <Form.Group as={Row}>
                                             <Form.Label column sm="4">
                                                 <a href="#/SignUp">Sign Up</a>
-                                                <span>  ·  </span>
-                                                <a href="/ResetPassword">Forgot Password?</a>
                                             </Form.Label>
                                             <Col sm="8">
                                                 <Button variant="success" style={{float: 'right'}} onClick={this.login} disabled={this.state.username === '' || this.state.password === ''}>Login</Button>

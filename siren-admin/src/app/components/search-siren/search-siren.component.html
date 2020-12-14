@@ -16,7 +16,7 @@
     </div>
     <div class="card-text">
         <div class="input-group mb-3">
-            <textarea #content class="form-control" lines="3" placeholder="content" aria-label="content"></textarea>
+            <textarea #content rows="3" class="form-control" lines="3" placeholder="content" aria-label="content"></textarea>
         </div>
     </div>
     <button id="filter-btn" class="btn btn-primary w-100 mb-3" (click)="filter(username.value, roomname.value, content.value)">Filter</button>
@@ -41,7 +41,7 @@
                     <span style="margin-left: 10px">{{ stringifyTimestamp(comment.upload_time) }}</span>
                 </span>
                 <span class="col-sm-4">
-                    <button id="delete-cmnt-{{ message._id }}-{{ comment._id }}-btn" class="btn btn-danger" style="float: right" (click)="deleteComment(message._id, comment._id)">-</button>
+                    <button id="delete-cmnt-{{ message._id }}-{{ comment._id }}-btn" class="btn btn-danger" style="float: right" (click)="deleteComment(message._id, comment._id)">Delete</button>
                 </span>
                 <br />
                 <span>{{ comment.text }}</span>

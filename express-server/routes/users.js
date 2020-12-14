@@ -43,7 +43,7 @@ module.exports = function(emitEvent) {
             }else if(!await usersDB.findOne({_id: body.username})){
                 //if username unique
                 //create document:
-                usersDB.insertOne({_id: body.username, name: body.name, password: body.password, rooms: []})
+                usersDB.insertOne({_id: body.username, description: 'Hello world!', name: body.name, password: body.password, rooms: []})
                 res.sendStatus(StatusCodes.OK)
             }else{
                 //username taken
@@ -58,7 +58,7 @@ module.exports = function(emitEvent) {
             if (!req.session.userID) {
                 res.sendStatus(StatusCodes.UNAUTHORIZED)
             } else {
-                usersDB.findOne({_id: req.session.userID}, {projection: {_id: true, name: true}})
+                usersDB.findOne({_id: req.session.userID}, {projection: {_id: true, name: true, description: true}})
                     .then((user) => res.json(user).end())
                     .catch((err) => res.sendStatus(StatusCodes.NOT_FOUND).end())
             }
@@ -69,7 +69,7 @@ module.exports = function(emitEvent) {
             if (!req.session.userID) {
                 res.sendStatus(StatusCodes.UNAUTHORIZED)
             } else {
-                usersDB.findOne({_id: req.query.id}, {projection: {_id: true, name: true}})
+                usersDB.findOne({_id: req.query.id}, {projection: {_id: true, name: true, description: true}})
                     .then((user) => res.json(user).end())
                     .catch((err) => res.sendStatus(StatusCodes.NOT_FOUND).end())
             }
@@ -123,10 +123,10 @@ module.exports = function(emitEvent) {
             //content checks
             if (!req.session.userID) {
                 res.sendStatus(StatusCodes.UNAUTHORIZED)
-            } else if(!body.name) {
+            } else if(!body.name || !body.description) {
                 res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
             } else {
-                usersDB.updateOne({_id: req.session.userID}, {'$set': {name: body.name}})
+                usersDB.updateOne({_id: req.session.userID}, {'$set': {name: body.name, description: body.description}})
                 res.sendStatus(StatusCodes.OK)
             }
             

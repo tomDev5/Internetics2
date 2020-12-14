@@ -14,13 +14,19 @@
         <span class="input-group-text">&lt;</span>
         <input #sirens_high type="number" class="form-control" placeholder="Maximal # of sirens" aria-label="Maximal # of sirens">
     </div>
+    <div class="card-text">
+        <div class="input-group mb-3">
+            <textarea rows="3" #description type="text" class="form-control" placeholder="description" aria-label="description" aria-describedby="basic-addon1"></textarea>
+        </div>
+    </div>
 
-    <button id="filter-btn" class="btn btn-primary w-100 mb-3" (click)="filter(username.value, sirens_low.value, sirens_high.value)">Filter</button>
+    <button rows id="filter-btn" class="btn btn-primary w-100 mb-3" (click)="filter(username.value, sirens_low.value, sirens_high.value, description.value)">Filter</button>
 
     <ul class="list-group list-group-flush" style="height: calc(100% - 60px); overflow-y: scroll;">
         <li class="list-group-item" *ngFor="let user of users">
-            <a routerLink="/profile/{{user._id}}">@{{ user._id }}</a>
+            <a>@{{ user._id }}</a>
             <span class="ml-2">({{ user.sirens }} sirens)</span>
+            <div>{{user.description}}</div>
         </li>
     </ul>
 </div>

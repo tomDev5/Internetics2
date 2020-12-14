@@ -18,7 +18,7 @@ export default class SignUp extends Component {
     signup = ()=>{
         const recipeUrl = '/api/users/signup';
         const postBody = {
-            _id: this.state.username,
+            username: this.state.username,
             name: this.state.name,
             password: this.state.password,
             password2: this.state.password2
@@ -35,11 +35,11 @@ export default class SignUp extends Component {
             .then(res => {
                 if(res.status === 200){
                     window.location.pathname = '/Login'
-                }else if(res.status === 409){
+                }else if(res.status === 406){
                     this.setState({errorMessage: 'Content error. You\'re probably sending this request with the console.'})
                 }else if(res.status === 403){
                     this.setState({errorMessage: 'Username is taken.'})
-                }else if(res.status !== 200){
+                }else {
                     this.setState({errorMessage: 'Please try again in a few minutes.'})
                 }
             })

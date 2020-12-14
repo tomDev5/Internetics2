@@ -179,8 +179,9 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             res.sendStatus(StatusCodes.UNAUTHORIZED).end()
         } else {
             if (!req.query.user) req.query.user = ''
-            if (!req.query.sirens_low) req.query.sirens_low = 0
-            if (!req.query.sirens_high) req.query.sirens_high = 2147483648
+            if (!req.query.sirens_low) req.query.sirens_low = '0'
+            if (!req.query.sirens_high) req.query.sirens_high = '2147483648'
+            if (!req.query.description) req.query.description = ''
 
             const group_by_result = (await roomsDB.aggregate([
                 {'$project' : {'sirens': true, _id: false}},
@@ -195,7 +196,7 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
                 count_map[doc._id] = doc.count
             }
 
-            const results = (await usersDB.find({_id: new RegExp(req.query.user)}).toArray())
+            const results = (await usersDB.find({_id: new RegExp(req.query.user), description: new RegExp(req.query.description)}).toArray())
                 .filter(user => Object.keys(count_map).includes(user._id))
                 .map(user => {user.sirens = count_map[user._id]; return user})
             

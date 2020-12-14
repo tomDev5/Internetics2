@@ -1,16 +1,16 @@
 <div style="overflow-y: scroll; overflow-x: hidden;">
-    <div class="row" style="margin-right: 50px; margin-left: 50px; height: calc(100vh - 60px);">
+    <div class="row mt-3" style="margin-right: 50px; margin-left: 50px; height: calc(100vh - 120px);">
         <div class="col-sm-6" style="height: 100%;">
             <div class="title">
-                User List
+                Users
             </div>
             <ul class="list-group list-group-flush" style="height: calc(100% - 60px); overflow-y: scroll;">
                 <li class="list-group-item" *ngFor="let user of users">
-                    <a routerLink="/profile/{{user}}">@{{ user }}</a>
-                    <button id="remove-user-{{ user }}-btn" class="btn btn-danger" style="float: right" (click)="removeUser(user)">-</button>
+                    <a>@{{ user }}</a>
+                    <button id="remove-user-{{ user }}-btn" class="btn btn-danger" style="float: right" (click)="removeUser(user)">Delete</button>
                 </li>
-                <li style="text-align: center; margin-top: 15px;">
-                    <button id="add-user-btn" class="btn btn-success" style="width: 90%" data-toggle="modal" data-target="#addUserModal">Add user</button>
+                <li class="list-group-item" style="text-align: center; margin-top: 15px;">
+                    <button id="add-user-btn" class="btn btn-success" style="width: 90%" data-toggle="modal" data-target="#addUserModal">Add User</button>
                 </li>
             </ul>
         </div>
@@ -21,7 +21,7 @@
             <div class="cards" style="height: calc(100% - 60px); overflow-y: scroll;">
                 <div class="card" *ngFor="let message of messages" style="margin-bottom: 15px; text-align: left">
                     <div class="card-header">
-                        <a routerLink="/profile/{{ message.user }}" style="text-decoration: none">@{{ message.user }}</a>
+                        <a style="text-decoration: none">@{{ message.user }}</a>
                         <span style="margin-left: 5px">{{ stringifyTimestamp(message.upload_time) }}</span>
                     </div>
                     <div class="card-body">{{ message.text }}</div>
@@ -34,11 +34,11 @@
                         <div id="comments-{{ message._id }}" class="collapse">
                             <div class="list-group-item" *ngFor="let comment of message.comments">
                                 <span class="col-sm-8" style="margin-right: 1rem; padding-left: 0px;">
-                                    <a routerLink="/profile/{{ comment.user }}">@{{ comment.user }}</a>
+                                    <a>@{{ comment.user }}</a>
                                     <span style="margin-left: 10px">{{ stringifyTimestamp(comment.upload_time) }}</span>
                                 </span>
                                 <span class="col-sm-4">
-                                    <button id="delete-cmnt-{{ message._id }}-{{ comment._id }}-btn" class="btn btn-danger" style="float: right" (click)="deleteComment(message._id, comment._id)">-</button>
+                                    <button id="delete-cmnt-{{ message._id }}-{{ comment._id }}-btn" class="btn btn-danger" style="float: right" (click)="deleteComment(message._id, comment._id)">Delete</button>
                                 </span>
                                 <br />
                                 <span>{{ comment.text }}</span>
