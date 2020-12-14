@@ -14,7 +14,11 @@ import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-t
 import { FormsModule } from '@angular/forms';
 import { SearchSirenComponent } from './components/search-siren/search-siren.component';
 import { CreateNewRoomModalComponent } from './components/create-new-room-modal/create-new-room-modal.component';
+<<<<<<< HEAD
 import { SearchUserComponent } from './components/search-user/search-user.component';
+=======
+import { GraphDirectiveDirective } from './directives/graph-directive.directive';
+>>>>>>> 3dc2f20ead28036836200124f0283dc9ed6a9ee2
 
 @NgModule({
   declarations: [
@@ -26,6 +30,7 @@ import { SearchUserComponent } from './components/search-user/search-user.compon
     DataComponent,
     CreateNewRoomModalComponent,
     FeedComponent,
+    GraphDirectiveDirective,
     AddUserToRoomComponent,
     SearchSirenComponent,
     SearchUserComponent

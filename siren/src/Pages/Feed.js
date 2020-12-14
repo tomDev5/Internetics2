@@ -160,7 +160,6 @@ export default class Feed extends Component {
         const save = document.querySelector('#save-' + commentID + '-btn')
         const span = document.querySelectorAll('#body-' + commentID + ' span')[1]
         const input = document.querySelector('#body-' + commentID + ' input')
-        console.log(document.querySelectorAll('#body-' + commentID + ' span'))
 
         if (span.hidden) {
             if (e.target === save) {
