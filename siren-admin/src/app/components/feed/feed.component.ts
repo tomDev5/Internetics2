@@ -26,6 +26,14 @@ export class FeedComponent implements OnInit, OnDestroy {
 
       this.events.unshift(new Event('New Siren Sent', datetimeString, data.user, data.room, data.text))
     })
+
+    this.listen('comment').subscribe((data: any) => {
+      const date = new Date()
+      const europe_date = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
+      const datetimeString = date.toLocaleTimeString() + ', ' + europe_date
+
+      this.events.unshift(new Event('New Comment Sent', datetimeString, data.user, data.room, data.text))
+    })
   }
 
   listen(event: string) {

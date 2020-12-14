@@ -235,6 +235,12 @@ module.exports = function(emitEvent) {
                     upload_time: new Date().getTime()
                 }
 
+                emitEvent('comment', {
+                    user: newComment.user,
+                    room: (await roomsDB.findOne({'_id': body.room}, {'name': true, '_id': false})).name,
+                    text: newComment.text,
+                })
+
                 roomsDB.updateOne({_id: body.room, 'sirens._id': body.siren}, {$push: {'sirens.$.comments': newComment}})
                 res.sendStatus(StatusCodes.OK)
             }
