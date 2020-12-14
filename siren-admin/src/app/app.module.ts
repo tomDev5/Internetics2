@@ -9,6 +9,7 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { RoomViewComponent } from './components/room-view/room-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { DataComponent } from './components/data/data.component';
+import { FeedComponent } from './components/feed/feed.component';
 import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-to-room.component';
 import { FormsModule } from '@angular/forms';
 import { CreateNewRoomModalComponent } from './components/create-new-room-modal/create-new-room-modal.component';
@@ -22,7 +23,8 @@ import { CreateNewRoomModalComponent } from './components/create-new-room-modal/
     LoginComponent,
     DataComponent,
     AddUserToRoomComponent,
-    CreateNewRoomModalComponent
+    CreateNewRoomModalComponent,
+    FeedComponent
   ],
   imports: [
     BrowserModule,
