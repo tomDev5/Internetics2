@@ -10,7 +10,7 @@
                     <button id="remove-user-{{ user }}-btn" class="btn btn-danger" style="float: right" (click)="removeUser(user)">-</button>
                 </li>
                 <li style="text-align: center; margin-top: 15px;">
-                    <button id="add-user-btn" class="btn btn-success" style="width: 90%" (click)="addUser()">Add user</button>
+                    <button id="add-user-btn" class="btn btn-success" style="width: 90%" data-toggle="modal" data-target="#addUserModal">Add user</button>
                 </li>
             </ul>
         </div>
@@ -49,4 +49,5 @@
             </div>
         </div>
     </div>
+    <app-add-user-to-room [userList]="selectableUsers" (userAdded)="userAddedParentHandler($event)"></app-add-user-to-room>
 </div>

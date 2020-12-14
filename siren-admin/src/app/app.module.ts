@@ -9,6 +9,8 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { RoomViewComponent } from './components/room-view/room-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { DataComponent } from './components/data/data.component';
+import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-to-room.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,12 +19,14 @@ import { DataComponent } from './components/data/data.component';
     TopBarComponent,
     RoomViewComponent,
     LoginComponent,
-    DataComponent
+    DataComponent,
+    AddUserToRoomComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

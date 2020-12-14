@@ -63,6 +63,8 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         body = req.body
         if (!req.session.userID) {
             res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(!req.query.roomID || !req.query.messageID) {
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
         } else {
             roomsDB.updateOne({_id: req.query.roomID},
                 { $pull: { "sirens" : { _id: req.query.messageID } } }, {upsert: false,multi: true})
@@ -95,6 +97,59 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             }).then(()=>roomsDB.findOne({_id: query.roomID}).then(result=>res.send(result)))
         }
     })
+
+    router.delete('/user', async (req,res) => {
+        body = req.body
+        query = req.query
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(!query.roomID || !query.userID){
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
+        } else {
+            roomsDB.updateOne({_id: query.roomID},
+                { $pull: { "users" : query.userID } },
+                {upsert: false,multi: true})
+                .then(result=>{
+                    if(result.modifiedCount === 1){
+                        //send the new room data:
+                        roomsDB.findOne({_id: query.roomID}).then(result=>res.send(result))
+                    }else{
+                        res.sendStatus(StatusCodes.BAD_REQUEST)
+                    }
+                })
+        }
+    })
+
+    router.get('/userList', async (req,res)=>{
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else {
+            usersDB.find().project({_id: 1, name: 1}).toArray((err,arr)=>{
+                if(err || arr.length===0) res.sendStatus(StatusCodes.UNAUTHORIZED)
+                else{
+                    if(err) res.sendStatus(StatusCodes.NOT_FOUND)
+                    else res.json(arr)
+                }
+            })
+        }
+    })
+
+    router.post('/addUserToRoom', async (req,res) => {
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else {
+            if(!await usersDB.findOne({_id: body.userID})){ // if user doesn't exist
+                res.sendStatus(StatusCodes.BAD_REQUEST)
+            }else if(await roomsDB.findOne({"_id": body.roomID, users: { $all : [body.userID] }})){ //if user already in the room
+                res.sendStatus(StatusCodes.BAD_REQUEST)
+            }
+            roomsDB.updateOne({_id: body.roomID},{ $push: { users: body.userID } })
+            roomsDB.findOne({_id: body.roomID}).then(result=>res.send(result))
+        }
+    })
+
 })
 
 module.exports = router

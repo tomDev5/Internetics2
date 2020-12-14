@@ -12,7 +12,7 @@ export class MyService {
   constructor(private http:HttpClient, private router: Router) { }
 
   logout(){
-    console.log(this.http.post<any>('/api/admins/logout', {}).subscribe(
+    this.http.post<any>('/api/admins/logout', {}).subscribe(
         data=>{
           console.log(data)
           this.router.navigateByUrl('/login')
@@ -20,7 +20,7 @@ export class MyService {
       ,
         error=>{
           
-        }))
+        })
   }
 
   async login(username:string,password:string){
