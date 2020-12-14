@@ -55,7 +55,9 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         if (!req.session.userID) {
             res.sendStatus(StatusCodes.UNAUTHORIZED)
         } else {
-            roomsDB.findOne({_id: req.query.roomID}).then(result=>res.send(result))
+            let test = await roomsDB.findOne({_id: req.query.roomID})
+            console.log(test)
+            res.send(test)
         }
     })
 
@@ -147,6 +149,23 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             }
             roomsDB.updateOne({_id: body.roomID},{ $push: { users: body.userID } })
             roomsDB.findOne({_id: body.roomID}).then(result=>res.send(result))
+        }
+    })
+
+    router.get('/newRoom', async (req,res)=>{
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else {
+            //req.query.roomName
+            roomsDB.insertOne({_id: ObjectID().toString(), name: req.query.roomName, users: [], sirens: []})
+            roomsDB.find({}).project({_id: 1, name: 1}).toArray((err,arr)=>{
+                if(err || arr.length===0) res.sendStatus(StatusCodes.UNAUTHORIZED)
+                else{
+                    if(err) res.sendStatus(StatusCodes.NOT_FOUND)
+                    else res.json(arr)
+                }
+            })
         }
     })
 

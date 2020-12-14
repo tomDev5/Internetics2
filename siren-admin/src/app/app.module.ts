@@ -11,6 +11,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DataComponent } from './components/data/data.component';
 import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-to-room.component';
 import { FormsModule } from '@angular/forms';
+import { CreateNewRoomModalComponent } from './components/create-new-room-modal/create-new-room-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormsModule } from '@angular/forms';
     RoomViewComponent,
     LoginComponent,
     DataComponent,
-    AddUserToRoomComponent
+    AddUserToRoomComponent,
+    CreateNewRoomModalComponent
   ],
   imports: [
     BrowserModule,

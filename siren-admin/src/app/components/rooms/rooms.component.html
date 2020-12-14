@@ -3,5 +3,9 @@
     <li class="nav-item" *ngFor="let room of rooms; let first = first">
         <a id="room-{{room._id}}" class="nav-link clickable {{first ? 'active' :''}}" (click)="onTabClick(room._id)" active>{{ room.name }}</a>
     </li>
+    <li class="nav-item">
+        <a id="add-room" class="nav-link clickable" data-toggle="modal" data-target="#createRoomModal" active>CreateRoom</a>
+    </li>
 </ul>
+<app-create-new-room-modal [roomList]="rooms" (roomAdded)="roomAddedParentHandler($event)"></app-create-new-room-modal>
 <app-room-view [roomID]="selectedRoomID"></app-room-view>
