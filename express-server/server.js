@@ -1,11 +1,17 @@
 const express = require('express');
 const session = require('express-session')
 const bodyParser = require('body-parser')
+const http = require('http')
+const socketio = require('socket.io')
 
 const users = require('./routes/users')
 const admins = require('./routes/admins')
 
+// socket.io and express app on the same port
 const app = express()
+const server = http.createServer(app)
+const io = socketio(server)
+io.on('connection', socket => {})
 
 let sess = {
   resave: false,
@@ -25,6 +31,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }))
 
-app.use('/api/users', users)
+app.use('/api/users', users((event, data) => {
+  console.log('test', io)
+  io.emit(event, data)
+}))
 app.use('/api/admins', admins)
-app.listen(8080);
+
+server.listen(8080);
