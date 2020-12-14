@@ -5,7 +5,7 @@ const StatusCodes = require('http-status-codes').StatusCodes
 const MongoClient = mongodb.MongoClient
 const ObjectID = mongodb.ObjectID
  
-module.exports = function(emit) {
+module.exports = function(emitEvent) {
     const router = express.Router()
     const connectionString = 'mongodb://127.0.0.1:27017/'
     
@@ -165,7 +165,11 @@ module.exports = function(emit) {
                     likes: []
                 }
 
-                emit('siren', {user: newSiren.user, text: newSiren.text, upload_time: newSiren.upload_time})
+                emitEvent('siren', {
+                    user: newSiren.user,
+                    room: (await roomsDB.findOne({'_id': body.room}, {'name': true, '_id': false})).name,
+                    text: newSiren.text,
+                })
                 roomsDB.updateOne({_id: body.room}, {$push: {sirens: newSiren}})
                 res.sendStatus(StatusCodes.OK)
             }

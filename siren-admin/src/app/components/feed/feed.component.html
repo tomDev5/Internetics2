@@ -1,0 +1,13 @@
+<app-top-bar></app-top-bar>
+<div class="container">
+    <div class="title">Live Feed</div>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let event of events">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{event.name}} - @{{event.user}} on room {{ event.room }}</h5>
+                <small>{{event.time}}</small>
+            </div>
+            <p class="mb-1">{{event.text}}</p>
+        </li>
+    </ul>
+</div>

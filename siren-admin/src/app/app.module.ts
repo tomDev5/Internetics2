@@ -9,6 +9,7 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { RoomViewComponent } from './components/room-view/room-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { DataComponent } from './components/data/data.component';
+import { FeedComponent } from './components/feed/feed.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { DataComponent } from './components/data/data.component';
     TopBarComponent,
     RoomViewComponent,
     LoginComponent,
-    DataComponent
+    DataComponent,
+    FeedComponent
   ],
   imports: [
     BrowserModule,

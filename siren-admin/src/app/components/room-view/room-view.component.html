@@ -5,7 +5,7 @@
                 User List
             </div>
             <ul class="list-group list-group-flush" style="height: calc(100% - 60px); overflow-y: scroll;">
-                <li class="list-group-item" style="" *ngFor="let user of users">
+                <li class="list-group-item" *ngFor="let user of users">
                     <a routerLink="/Profile/{{user}}">@{{ user }}</a>
                     <button id="remove-user-{{ user }}-btn" class="btn btn-danger" style="float: right" (click)="removeUser(user)">-</button>
                 </li>
