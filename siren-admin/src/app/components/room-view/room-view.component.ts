@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { User } from '../../models/User'
 import { Message} from '../../models/Message'
-import {DomSanitizer} from "@angular/platform-browser"
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 
 @Component({
   selector: 'app-room-view',
@@ -11,36 +11,27 @@ import {DomSanitizer} from "@angular/platform-browser"
 export class RoomViewComponent implements OnInit, OnChanges {
 
   @Input() roomID:string = '';
-  users:User[] = [];
+  users:string[] = [];
   messages:Message[] = [];
 
-  constructor(public sanitizer: DomSanitizer) { }
+  constructor(private http:HttpClient) { }
 
   ngOnInit(): void {
-    this.users = [
-      {_id: 'tomlubin', name: 'Tom'},
-      {_id: 'omerlubin', name: 'Omer'},
-      {_id: 'tomlubin1', name: 'Tom1'},
-      {_id: 'omerlubin1', name: 'Omer1'},
-      {_id: 'tomlubin2', name: 'Tom2'},
-      {_id: 'omerlubin2', name: 'Omer2'},
-      {_id: 'tomlubin3', name: 'Tom3'},
-      {_id: 'omerlubin3', name: 'Omer3'},
-    ]
-
-    this.messages = [
-      {_id: '123', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now(), comments: [{_id: '245123tghfuierdfnghor', user: 'omerlubin', text: 'COMMENT!', upload_time: 256442323}]},
-      {_id: '124', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+5000, comments: []},
-      {_id: '125', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+10000, comments: []},
-      {_id: '126', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
-      {_id: '127', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
-      {_id: '128', user: 'tomlubin', text:'hi',likes: 16,upload_time: Date.now()+15000, comments: []},
-
-    ]
+    
   }
 
-  ngOnChanges(){
-    console.log("change: "+this.roomID)
+  getRoomData(){
+    if(this.roomID !== ''){
+      this.http.get<any>("/api/admins/room?roomID="+this.roomID).subscribe(
+        data=>{
+          console.log(data)
+          this.users = data.users;
+          this.messages = data.sirens;
+        },
+        error=>{
+          console.log(error)
+        })
+    }
   }
 
   stringifyTimestamp = (timestamp:number) => {
@@ -49,17 +40,45 @@ export class RoomViewComponent implements OnInit, OnChanges {
     return date.toLocaleTimeString() + ', ' + europe_date
   }
 
-  removeAll(){
+  ngOnChanges(){
+    this.getRoomData()
+  }
+
+  deleteMessage(messageID:string){
+    this.http.delete<any>("/api/admins/message?roomID="+this.roomID+"&messageID="+messageID).subscribe(
+      data=>{
+        this.users = data.users;
+        this.messages = data.sirens;
+      },
+      error=>{
+        console.log(error)
+      }
+    )
+  }
+
+  deleteComment(messageID:string,commentID:string){
+    this.http.delete<any>("/api/admins/comment?roomID="+this.roomID+"&messageID="+messageID+"&commentID="+commentID).subscribe(
+      data=>{
+        this.users = data.users;
+        this.messages = data.sirens;
+      },
+      error=>{
+        console.log(error)
+      }
+    )
+  }
+
+  removeUser(userID:string){
 
   }
 
-  onLike(messageID:string){
-
+  addUser(){
+    
   }
 
   onCommentsBtnClick(messageID:string){
     let btn = document.getElementById('comments-'+messageID+'-btn')
-    let commentSection = document.getElementById('comments- '+messageID)
+    let commentSection = document.getElementById('comments-'+messageID)
     if(commentSection?.classList.contains('collapse')){
       commentSection.classList.remove('collapse')
       btn?.classList.remove('btn-outline-dark')
