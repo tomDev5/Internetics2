@@ -64,7 +64,35 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         if (!req.session.userID) {
             res.sendStatus(StatusCodes.UNAUTHORIZED)
         } else {
-            roomsDB.updateOne({_id: req.query.roomID},{$pull:{sirens:{$in:[req.query.messageID]}}}).then(result=>console.log(result))
+            roomsDB.updateOne({_id: req.query.roomID},
+                { $pull: { "sirens" : { _id: req.query.messageID } } }, {upsert: false,multi: true})
+                .then(result=>{
+                    if(result.modifiedCount === 1){
+                        //send the new room data:
+                        roomsDB.findOne({_id: req.query.roomID}).then(result=>res.send(result))
+                    }else{
+                        res.sendStatus(StatusCodes.BAD_REQUEST)
+                    }
+                })
+        }
+    })
+
+    router.delete('/comment', async (req,res) => {
+        body = req.body
+        query = req.query
+        //content checks
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED)
+        } else if(!query.roomID || !query.messageID || !query.commentID) {
+            res.sendStatus(StatusCodes.NOT_ACCEPTABLE)
+        } else {
+            roomsDB.updateOne({
+                '_id': query.roomID,
+                'sirens._id': query.messageID
+            },
+            {
+                '$pull': {'sirens.$.comments': {'_id': query.commentID}}
+            }).then(()=>roomsDB.findOne({_id: query.roomID}).then(result=>res.send(result)))
         }
     })
 })
