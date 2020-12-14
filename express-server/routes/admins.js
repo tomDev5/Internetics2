@@ -56,7 +56,6 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
             res.sendStatus(StatusCodes.UNAUTHORIZED)
         } else {
             let test = await roomsDB.findOne({_id: req.query.roomID})
-            console.log(test)
             res.send(test)
         }
     })
@@ -170,6 +169,36 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
                 {'$match' : {'user': new RegExp(req.query.user)}},
                 {'$match' : {'text': new RegExp(req.query.text)}},
             ]).toArray()
+            res.json(results).end()
+        }
+    })
+
+    router.get('/users', async (req,res) => {
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED).end()
+        } else {
+            if (!req.query.user) req.query.user = ''
+            if (!req.query.sirens_low) req.query.sirens_low = 0
+            if (!req.query.sirens_high) req.query.sirens_high = 2147483648
+
+            const group_by_result = (await roomsDB.aggregate([
+                {'$project' : {'sirens': true, _id: false}},
+                {'$unwind' : '$sirens'},
+                {'$replaceRoot' : {'newRoot': '$sirens'}},
+                {'$group' : {'_id': '$user', 'count': {$sum: 1}}},
+                {'$match' : {'count': {'$gte': 0, '$lte': 100}}},
+            ]).toArray())
+
+            let count_map = {}
+            for (let doc of group_by_result) {
+                count_map[doc._id] = doc.count
+            }
+
+            const results = (await usersDB.find({_id: new RegExp(req.query.user)}).toArray())
+                .filter(user => Object.keys(count_map).includes(user._id))
+                .map(user => {user.sirens = count_map[user._id]; return user})
+            
             res.json(results).end()
         }
     })

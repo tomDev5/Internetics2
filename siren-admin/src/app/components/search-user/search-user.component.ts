@@ -1,0 +1,24 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-search-user',
+  templateUrl: './search-user.component.html',
+  styleUrls: ['./search-user.component.css']
+})
+export class SearchUserComponent implements OnInit {
+  users: Array<any> = []
+
+  constructor(private http:HttpClient) { }
+
+  filter(username: string, sirens_low: number, sirens_high: number) {
+    this.http.get<any>("/api/admins/users?user="+username+"&sirens_low="+sirens_low+"&sirens_high="+sirens_high).subscribe(
+      data => this.users = data,
+      error => console.log(error)
+    )
+  }
+
+  ngOnInit(): void {
+  }
+
+}

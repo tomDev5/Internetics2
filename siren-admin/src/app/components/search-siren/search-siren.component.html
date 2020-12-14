@@ -24,7 +24,7 @@
 
 <div class="card" *ngFor="let message of sirens" style="margin-bottom: 15px; text-align: left">
     <div class="card-header">
-        <a routerLink="/Profile/{{ message.user }}" style="text-decoration: none">@{{ message.user }}</a>
+        <a routerLink="/profile/{{ message.user }}" style="text-decoration: none">@{{ message.user }}</a>
         <span style="margin-left: 5px">{{ stringifyTimestamp(message.upload_time) }}</span>
     </div>
     <div class="card-body">{{ message.text }}</div>
@@ -37,7 +37,7 @@
         <div id="comments-{{ message._id }}" class="collapse">
             <div class="list-group-item" *ngFor="let comment of message.comments">
                 <span class="col-sm-8" style="margin-right: 1rem; padding-left: 0px;">
-                    <a routerLink="/Profile/{{ comment.user }}">@{{ comment.user }}</a>
+                    <a routerLink="/profile/{{ comment.user }}">@{{ comment.user }}</a>
                     <span style="margin-left: 10px">{{ stringifyTimestamp(comment.upload_time) }}</span>
                 </span>
                 <span class="col-sm-4">

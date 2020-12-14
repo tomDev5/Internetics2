@@ -14,6 +14,7 @@ import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-t
 import { FormsModule } from '@angular/forms';
 import { SearchSirenComponent } from './components/search-siren/search-siren.component';
 import { CreateNewRoomModalComponent } from './components/create-new-room-modal/create-new-room-modal.component';
+import { SearchUserComponent } from './components/search-user/search-user.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CreateNewRoomModalComponent } from './components/create-new-room-modal/
     CreateNewRoomModalComponent,
     FeedComponent,
     AddUserToRoomComponent,
-    SearchSirenComponent
+    SearchSirenComponent,
+    SearchUserComponent
   ],
   imports: [
     BrowserModule,

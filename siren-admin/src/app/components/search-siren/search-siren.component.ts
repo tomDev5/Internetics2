@@ -46,7 +46,7 @@ export class SearchSirenComponent implements OnInit {
   }
 
   filter(username: string, roomname: string, content: string) {
-    this.http.get<any>("/api/admins/messages").subscribe(
+    this.http.get<any>("/api/admins/messages?user="+username+"&room="+roomname+"&text="+content).subscribe(
       data => this.sirens = data,
       error => console.log(error)
     )

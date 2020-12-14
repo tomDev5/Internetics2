@@ -5,6 +5,7 @@ import { FeedComponent } from './components/feed/feed.component';
 import { LoginComponent } from './components/login/login.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { SearchSirenComponent } from './components/search-siren/search-siren.component';
+import { SearchUserComponent } from './components/search-user/search-user.component';
 
 const routes: Routes = [
   {path: 'rooms', component: RoomsComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'feed', component: FeedComponent},
   {path: 'searchSiren', component: SearchSirenComponent},
+  {path: 'searchUser', component: SearchUserComponent},
 ];
 
 @NgModule({

@@ -6,7 +6,7 @@
             </div>
             <ul class="list-group list-group-flush" style="height: calc(100% - 60px); overflow-y: scroll;">
                 <li class="list-group-item" *ngFor="let user of users">
-                    <a routerLink="/Profile/{{user}}">@{{ user }}</a>
+                    <a routerLink="/profile/{{user}}">@{{ user }}</a>
                     <button id="remove-user-{{ user }}-btn" class="btn btn-danger" style="float: right" (click)="removeUser(user)">-</button>
                 </li>
                 <li style="text-align: center; margin-top: 15px;">
@@ -21,7 +21,7 @@
             <div class="cards" style="height: calc(100% - 60px); overflow-y: scroll;">
                 <div class="card" *ngFor="let message of messages" style="margin-bottom: 15px; text-align: left">
                     <div class="card-header">
-                        <a routerLink="/Profile/{{ message.user }}" style="text-decoration: none">@{{ message.user }}</a>
+                        <a routerLink="/profile/{{ message.user }}" style="text-decoration: none">@{{ message.user }}</a>
                         <span style="margin-left: 5px">{{ stringifyTimestamp(message.upload_time) }}</span>
                     </div>
                     <div class="card-body">{{ message.text }}</div>
@@ -34,7 +34,7 @@
                         <div id="comments-{{ message._id }}" class="collapse">
                             <div class="list-group-item" *ngFor="let comment of message.comments">
                                 <span class="col-sm-8" style="margin-right: 1rem; padding-left: 0px;">
-                                    <a routerLink="/Profile/{{ comment.user }}">@{{ comment.user }}</a>
+                                    <a routerLink="/profile/{{ comment.user }}">@{{ comment.user }}</a>
                                     <span style="margin-left: 10px">{{ stringifyTimestamp(comment.upload_time) }}</span>
                                 </span>
                                 <span class="col-sm-4">
