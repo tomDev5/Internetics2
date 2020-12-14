@@ -12,6 +12,7 @@ import { DataComponent } from './components/data/data.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-to-room.component';
 import { FormsModule } from '@angular/forms';
+import { SearchSirenComponent } from './components/search-siren/search-siren.component';
 import { CreateNewRoomModalComponent } from './components/create-new-room-modal/create-new-room-modal.component';
 import { GraphDirectiveDirective } from './directives/graph-directive.directive';
 
@@ -23,10 +24,11 @@ import { GraphDirectiveDirective } from './directives/graph-directive.directive'
     RoomViewComponent,
     LoginComponent,
     DataComponent,
-    AddUserToRoomComponent,
     CreateNewRoomModalComponent,
     FeedComponent,
-    GraphDirectiveDirective
+    GraphDirectiveDirective,
+    AddUserToRoomComponent,
+    SearchSirenComponent
   ],
   imports: [
     BrowserModule,

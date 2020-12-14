@@ -152,6 +152,28 @@ MongoClient.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology
         }
     })
 
+    router.get('/messages', async (req,res) => {
+        body = req.body
+        if (!req.session.userID) {
+            res.sendStatus(StatusCodes.UNAUTHORIZED).end()
+        } else {
+            if (!req.query.text) req.query.text = ''
+            if (!req.query.room) req.query.room = ''
+            if (!req.query.user) req.query.user = ''
+
+            const results = await roomsDB.aggregate([
+                {'$match' : {'name': new RegExp(req.query.room)}},
+                {'$addFields' : {'sirens.room': '$$ROOT._id'}},
+                {'$project' : {'sirens': true, _id: false}},
+                {'$unwind' : '$sirens'},
+                {'$replaceRoot' : {'newRoot': '$sirens'}},
+                {'$match' : {'user': new RegExp(req.query.user)}},
+                {'$match' : {'text': new RegExp(req.query.text)}},
+            ]).toArray()
+            res.json(results).end()
+        }
+    })
+
     router.get('/newRoom', async (req,res)=>{
         body = req.body
         if (!req.session.userID) {
