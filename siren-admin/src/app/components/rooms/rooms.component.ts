@@ -36,4 +36,14 @@ export class RoomsComponent implements OnInit {
         console.log(error)
       })
   }
+
+  roomAddedParentHandler(roomName:string){
+    this.http.get<any>("/api/admins/newRoom?roomName="+roomName).subscribe(
+      data=>{
+        this.rooms = data
+      },
+      error=>{
+        console.log(error)
+      })
+  }
 }

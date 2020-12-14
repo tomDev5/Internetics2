@@ -13,6 +13,7 @@ import { FeedComponent } from './components/feed/feed.component';
 import { AddUserToRoomComponent } from './components/add-user-to-room/add-user-to-room.component';
 import { FormsModule } from '@angular/forms';
 import { SearchSirenComponent } from './components/search-siren/search-siren.component';
+import { CreateNewRoomModalComponent } from './components/create-new-room-modal/create-new-room-modal.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { SearchSirenComponent } from './components/search-siren/search-siren.com
     RoomViewComponent,
     LoginComponent,
     DataComponent,
+    CreateNewRoomModalComponent,
     FeedComponent,
     AddUserToRoomComponent,
     SearchSirenComponent

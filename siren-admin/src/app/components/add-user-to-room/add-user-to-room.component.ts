@@ -1,5 +1,4 @@
-import { OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { OnChanges, SimpleChanges, ViewChild, Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { User } from '../../models/User';
 
 @Component({
