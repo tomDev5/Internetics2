@@ -8,7 +8,7 @@ import { SearchSirenComponent } from './components/search-siren/search-siren.com
 import { SearchUserComponent } from './components/search-user/search-user.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'rooms', component: RoomsComponent},
   {path: 'data',component: DataComponent},
   {path: 'login', component: LoginComponent},

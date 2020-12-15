@@ -11,7 +11,7 @@ export class DataComponent implements OnInit {
 
   constructor(private http:HttpClient) { }
 
-  timestamps:number[] = [0,1,2,3,4,5]
+  timestamps:number[] = []
 
   ngOnInit(): void {
     this.getGraphData();
@@ -20,9 +20,12 @@ export class DataComponent implements OnInit {
   getGraphData(){
     this.http.get<any>("/api/admins/postsOverTime").subscribe(
       data=>{
-        /*for(let element of data){
+        for(let element of data){
           this.timestamps.push(element.upload_time)
-        }*/
+        }
+        this.timestamps.sort(function(a, b) {
+          return a - b;
+        });
       },
       error=>{
         console.log(error)
