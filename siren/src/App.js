@@ -41,14 +41,15 @@ export default class App extends Component {
         }
         fetch(recipeUrl, requestMetadata).then(res=>{
           if(res.status === 200){
-            window.location.hash = "/feed"
+            window.location.hash = "/Feed"
           }else{
-            window.location.hash = "/login"
+            window.location.hash = "/Login"
           }
         })
   }
 
   getSirens = () => {
+    console.log('test')
     const recipeUrl = '/api/users/sirens'
     const requestMetadata = {
         method: 'GET'
