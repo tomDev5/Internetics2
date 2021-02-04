@@ -91,7 +91,7 @@ function generateRooms(num, users) {
 
         rooms.push({
             _id: genHexString(24),
-            name: raw.variety,
+            name: raw.variety + Math.floor(Math.random() * 100),
             users: roomUsers.map(user => user._id),
             sirens: generateSirens(numSirens, roomUsers),
         })
