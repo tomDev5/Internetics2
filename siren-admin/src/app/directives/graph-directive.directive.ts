@@ -37,21 +37,25 @@ export class GraphDirectiveDirective implements OnDestroy {
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
-
+    // @ts-ignore
     var x = d3.time.scale()
         .range([0, width])
 
+    // @ts-ignore
     var y = d3.scale.linear()
         .range([height, 0]);
 
+    // @ts-ignore
     var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom");
 
+    // @ts-ignore
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left");
 
+    // @ts-ignore
     var line = d3.svg.line()
         .x(function(d:any) { return x(d.date); })
         .y(function(d:any) { return y(d.close); });

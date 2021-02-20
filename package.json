@@ -1,0 +1,14 @@
+{
+  "name": "internetics2",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start-express": "cd express-server && npm start",
+    "start-react": "cd siren && npm start",
+    "start-angular": "cd siren-admin && npm start",
+    "start": "concurrently --kill-others \"npm run start-express\" \"npm run start-react\" \"npm run start-angular\""
+  },
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  }
+}
